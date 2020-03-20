@@ -7,17 +7,33 @@ There are two primary files:
 1. A testbed server that starts and terminate different IoT projects
 2. A Client that exploits particular vulnerable project by sending payload remotely
 
-## Setup
-We will provide details later
 
-## Run Server Side
+
+## Setup
+To run the testbed, we need the following requirements:
+
+1. disable ASLR
+2. Install necessary libraries for IoT projects
+3. compile the main file of the projects enabling execution in stack and disabling stack protector
+
+### Prerequisite
+Run the following commands to meet project and environment dependencies:
+```sh
+chmod +x prerequisite.sh
+./prerequisite.sh
+```
+
+
+
+## Simulation
+### Run Server Side
 Select any of the included projects after running the server
 ```
 $ ./testbed.sh
 ```
 
-## Run Client Side
+### Run Client Side
 Select particular project and related exploit after running the client
 ```
-$ ./client
+$ ./client.sh
 ```

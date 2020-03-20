@@ -42,6 +42,7 @@ do
 	echo "Please, choose a particular Server to EXPLOIT..."
         echo "	Irrigation Server --> 1"
         echo "	Smart Home --> 2"
+	echo "Remote Control Car Monitor --> 3"
 	
 	read program
 	case $program in
@@ -51,6 +52,10 @@ do
 
 		2)
                 	Attack ./smarthome/so.py
+                	;;
+		
+		3)
+                	Attack ./remote-control-monitor-car-server/src/so.py
                 	;;
 
 	esac
