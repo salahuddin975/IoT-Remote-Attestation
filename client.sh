@@ -42,8 +42,9 @@ do
 	echo "Please, choose a particular Server to EXPLOIT..."
         echo "	Irrigation Server --> 1"
         echo "	Smart Home --> 2"
-	echo "Remote Control Car Monitor --> 3"
-	
+	echo "	Remote Control Car Monitor --> 3"
+	echo "	DNS server --> 4"
+
 	read program
 	case $program in
 		1)
@@ -57,6 +58,9 @@ do
 		3)
                 	Attack ./remote-control-monitor-car-server/src/so.py
                 	;;
+		4)
+			Attack ./DNS_server_raspberrypi/so.py
+			;;
 
 	esac
 done
