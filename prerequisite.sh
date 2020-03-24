@@ -17,6 +17,13 @@ cd ..
 # install Remote Control Monitor Car Server
 sudo apt-get install libopencv-dev
 cd remote-control-monitor-car-server/src/
-make
+make clean; make
 chmod +x so.py ho.py
 cd ../..
+
+#install DNS server
+cd DNS_server_raspberrypi
+make clean; make
+chmod +x so.py ho.py
+cd ..
+
