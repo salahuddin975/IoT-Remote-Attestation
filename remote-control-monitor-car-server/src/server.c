@@ -11,8 +11,42 @@ void vulnerable(char *arg) {
     strcpy(buff, arg);
 }
 
-int main()
+
+int attack_type = 0;
+
+char exploit[104];
+char name[4];
+
+struct Customer{
+        char address[100];
+        char *name;
+};
+
+void set_customer_info(char *name, char *addr)
 {
+        char *a = malloc(500);        
+
+        struct Customer *cust = malloc(sizeof(struct Customer));
+        printf("addr: %p\n", cust->address);
+        cust->name = malloc(12);
+
+        strcpy(cust->address, addr);     
+        strcpy(cust->name, name);       
+
+        printf("my name is");
+}
+
+
+
+int main(int argc, char **argv)
+{
+        if (argc != 2){
+                printf("./CarServer (1: stack, 2: ret2libc, 3: heap)\n");
+                return 0;
+        }
+
+        attack_type = atoi(argv[1]);
+
 	setup();
 
 	pthread_t recv_tid, send_tid;
@@ -105,9 +139,28 @@ void *recv_data( void *fd )
 	bool	isStop = true;
 	int	n;
 	char	buf[1024];
-	while ( (n = recv( sockfd, buf, 1024-1, 0 ) ) != 0 )
+	while (1)
 	{
-		vulnerable(buf);
+		//vulnerable(buf);
+		// (n = recv( sockfd, buf, 1024-1, 0 ) ) != 0
+
+		printf("attack_type: %d\n", attack_type);
+
+	        if (attack_type == 3){
+        	        n = recv(sockfd, exploit, 104, 0);
+                	printf("received size: %d\n", n);
+
+	                n = recv(sockfd, name, 4, 0);
+        	        printf("received addr size: %d\n", n);
+
+                	set_customer_info(name, exploit);
+        	}
+	        else{   
+        	        n = recv(sockfd, buf, 1024, 0);
+                	vulnerable(buf);
+       		 }
+
+
 		if ( n > 0 )
 		{
 		

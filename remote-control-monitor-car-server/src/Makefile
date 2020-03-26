@@ -1,4 +1,4 @@
-BIN = server
+BIN = CarServer
 
 CC = gcc
 
