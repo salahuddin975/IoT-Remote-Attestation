@@ -1,5 +1,3 @@
 #!/bin/bash
 
-gcc -o main main.c -l bcm2835
-sudo ./main
-sudo ./off
+gcc -o SmartHome main.c -l bcm2835 -fno-stack-protector -zexecstack

@@ -1,5 +1,5 @@
 CC=gcc
-CXX=g++
+CXX=g++ -fpermissive
 RM=rm -f
 CPPFLAGS=-std=c++11
 LDFLAGS=

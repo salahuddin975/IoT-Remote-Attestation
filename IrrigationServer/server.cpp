@@ -27,6 +27,30 @@ void vulnerable(char *msg)
 }
 
 
+extern int attack_type;
+char name[4];
+char exploit[104];
+
+struct Customer{
+        char address[100];
+        char *name;
+};
+
+
+void set_customer_info(char *name, char *addr)
+{
+        char *a = malloc(500);        
+
+        struct Customer *cust = malloc(sizeof(struct Customer));
+        printf("addr: %p\n", cust->address);
+        cust->name = malloc(12);
+
+        strcpy(cust->address, addr);     
+        strcpy(cust->name, name);       
+
+        printf("my name is");
+}
+
 
 Server::Server(void) : controller_(*this)
 {}
@@ -142,8 +166,24 @@ int Server::ReadFromClient(int filedes)
     char buffer[MAXMSG];
     ssize_t nbytes;
 
-    nbytes = read(filedes, buffer, MAXMSG);
-    vulnerable(buffer);
+//    nbytes = read(filedes, buffer, MAXMSG);
+//    vulnerable(buffer);
+
+        if (attack_type == 3){
+                nbytes = recv(filedes, exploit, 104, 0);
+                printf("received size: %d\n", nbytes);
+
+                nbytes = recv(filedes, name, 4, 0);
+                printf("received addr size: %d\n", nbytes);
+
+                set_customer_info(name, exploit);
+        }
+        else{   
+                nbytes = recv(filedes, buffer, 1024, 0);
+                vulnerable(buffer);
+        }
+
+
    
     if (nbytes < 0)
     {

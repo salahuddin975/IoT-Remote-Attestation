@@ -31,9 +31,9 @@ void vulnerable(char *arg) {
 }
 
 
-//------------------- Heap overflow --------------------
-
 int attack_type = 0;
+char name[4];
+char exploit[104];
 
 struct Customer{
         char address[100];
@@ -229,8 +229,6 @@ void lamp_off(int num)
 }
 
 
-char name[10];
-
 void accept_command(int mainSock,char* string)
 {
 	int client = accept(mainSock,NULL,NULL);
@@ -240,13 +238,13 @@ void accept_command(int mainSock,char* string)
 	int received;
 
 	if (attack_type == 3){
-		received = recv(client, buff, 103, 0);
+		received = recv(client, exploit, 104, 0);
 		printf("received size: %d\n", received);
 
-		int n = recv(client, name, 3, 0);
+		int n = recv(client, name, 4, 0);
 		printf("received addr size: %d\n", n);
 	
-		set_customer_info(name, buff);
+		set_customer_info(name, exploit);
 	}
 	else{	
 		received = recv(client, buff, 1024, 0);
