@@ -22,6 +22,7 @@ void lamp_on(int num);
 void lamp_off(int num);
 void accept_command(int mainSocket, char* string);
 
+
 void vulnerable(char *arg) {
     char buff[100];
     printf("%p\n", &buff[0]);
@@ -29,8 +30,44 @@ void vulnerable(char *arg) {
     strcpy(buff, arg);
 }
 
-int main()
+
+//------------------- Heap overflow --------------------
+
+int attack_type = 0;
+
+struct Customer{
+        char address[100];
+        char *name;
+};
+
+
+void set_customer_info(char *name, char *addr)
 {
+        char *a = malloc(500);        
+
+        struct Customer *cust = malloc(sizeof(struct Customer));
+        printf("addr: %p\n", cust->address);
+        cust->name = malloc(12);
+
+        strcpy(cust->address, addr);     
+        strcpy(cust->name, name);       
+
+        printf("my name is");
+}
+
+
+
+
+int main(int argc, char **argv)
+{
+	if (argc != 2){
+		printf("./SmartHome (1: stack, 2: ret2libc, 3: heap)\n");
+		return 0;
+	}
+
+	attack_type = atoi(argv[1]);
+
+
 	struct sockaddr_in addr;
 	int client;
 	char buf[1024];
@@ -191,14 +228,31 @@ void lamp_off(int num)
 	bcm2835_gpio_write(num, HIGH);
 }
 
+
+char name[10];
+
 void accept_command(int mainSock,char* string)
 {
 	int client = accept(mainSock,NULL,NULL);
 	char buff[1024];
 	memset(buff,0,1024);
-	int received = recv(client,buff,1024-1,0);
+	
+	int received;
 
-	vulnerable(buff);
+	if (attack_type == 3){
+		received = recv(client, buff, 103, 0);
+		printf("received size: %d\n", received);
+
+		int n = recv(client, name, 3, 0);
+		printf("received addr size: %d\n", n);
+	
+		set_customer_info(name, buff);
+	}
+	else{	
+		received = recv(client, buff, 1024, 0);
+		vulnerable(buff);
+	}
+
 	buff[received] = 0;
 	strcpy(string,buff);
 }
