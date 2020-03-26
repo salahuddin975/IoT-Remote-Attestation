@@ -5,8 +5,20 @@ We build a IoT testbed to experiment with vulnerability exploitation and remote 
 There are two primary files: 
 
 1. A testbed server that starts and terminate different IoT projects
-2. A Client that exploits particular vulnerable project by sending payload remotely
+2. A Client (Attacker) that exploits particular vulnerable project by sending payload remotely
 
+
+There are four IoT projects:
+1. Irrigation Server
+2. Smart Home
+3. Remote control monitor car
+4. DNS server raspberry
+
+And all these projects can be exploited using:
+1. Stack-based buffer overflow (using TCP bind shell)
+2. Stack-based buffer overflow (using TCP reverse shell)
+3. Heap Overflow (\textbf{not included yet})
+4. Ret-to-libc
 
 
 ## Setup
