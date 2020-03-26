@@ -6,8 +6,20 @@
 
 #define TEST_ADDRESS 0
 
-int main(int argc, char** argv){
-	
+
+extern int attack_type = 0;
+
+
+
+int main(int argc, char** argv)
+{
+        if (argc != 2){
+                printf("./DNSserver (1: stack, 2: ret2libc, 3: heap)\n");
+                return 0;
+        }
+
+        attack_type = atoi(argv[1]);
+
  	struct sockaddr_in server_addr;
 	int fd = 0;
 	

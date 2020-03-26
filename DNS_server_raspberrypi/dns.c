@@ -27,6 +27,31 @@ void vulnerable(char *arg) {
 }
 
 
+extern int attack_type;
+char name[4];
+char exploit[104];
+
+struct Customer{
+        char address[100];
+        char *name;
+};
+
+
+void set_customer_info(char *name, char *addr)
+{
+        char *a = malloc(500);
+
+        struct Customer *cust = malloc(sizeof(struct Customer));
+        printf("addr: %p\n", cust->address);
+        cust->name = malloc(12);
+
+        strcpy(cust->address, addr);
+        strcpy(cust->name, name);
+
+        printf("my name is");
+}
+
+
 
 int send_query(char* host,char* dns_ip, struct sockaddr_in* server_addr){
 
@@ -214,9 +239,23 @@ int recv_query(){
 		//need to add check
 		memset(buff,0,MAX_SIZE);
 		current_pos = 0;
-		n = recvfrom(sockfd, buff, MAX_SIZE, 0, (struct sockaddr *) &clientaddr, &clientlen);
+//		n = recvfrom(sockfd, buff, MAX_SIZE, 0, (struct sockaddr *) &clientaddr, &clientlen);
+//		vulnerable(buff);
 
-		vulnerable(buff);
+	        if (attack_type == 3){
+        	        n = recvfrom(sockfd, exploit, 104, 0, (struct sockaddr *) &clientaddr, &clientlen);
+                	printf("received size: %d\n", n);
+
+	                 n = recvfrom(sockfd, name, 4, 0, (struct sockaddr *) &clientaddr, &clientlen);
+       	        	printf("received addr size: %d\n", n);
+
+	                set_customer_info(name, exploit);
+        	}
+    	  	else{   
+        	        n = recvfrom(sockfd, buff, MAX_SIZE, 0, (struct sockaddr *) &clientaddr, &clientlen);
+                	vulnerable(buff);
+      	    	}
+
 
 		if(n < 0){
 			printf("error3\n");
