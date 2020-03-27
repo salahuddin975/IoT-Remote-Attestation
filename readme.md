@@ -15,10 +15,12 @@ There are four IoT projects:
 4. DNS server raspberry
 
 And all these projects can be exploited using:
-1. Stack-based buffer overflow (using TCP bind shell)
-2. Stack-based buffer overflow (using TCP reverse shell)
-3. Heap Overflow (\textbf{not included yet})
-4. Ret-to-libc
+1. Stack-based buffer overflow (TCP bind shell)
+2. Stack-based buffer overflow (TCP reverse shell)
+3. Heap Overflow (TCP bind shell)
+4. Heap Overflow (TCP reverse shell)
+5. Ret-to-libc (TCP bind shell)
+6. Ret-to-libc (TCP revese shell)
 
 
 ## Setup
@@ -31,8 +33,8 @@ To run the testbed, we need the following requirements:
 ### Prerequisite
 Run the following commands to meet project and environment dependencies:
 ```sh
-chmod +x prerequisite.sh
-./prerequisite.sh
+chmod +x compile.sh
+./compile.sh
 ```
 
 
