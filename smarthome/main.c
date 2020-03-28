@@ -1,9 +1,11 @@
-#include<bcm2835.h>
 #include<stdio.h>
 #include<sys/socket.h>
 #include<sys/types.h>
 #include<netinet/in.h>
 #include<string.h>
+#include "bcm2835.h"
+
+
 
 #define PIN_LAMP_1 RPI_BPLUS_GPIO_J8_03
 #define PIN_LAMP_2 RPI_BPLUS_GPIO_J8_05
