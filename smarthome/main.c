@@ -25,11 +25,20 @@ void lamp_off(int num);
 void accept_command(int mainSocket, char* string);
 
 
-void vulnerable(char *arg) {
-    char buff[100];
-    printf("%p\n", &buff[0]);
-    printf("%s", arg);
+void vulnerable_main(char *arg) {
+    char buff[300];
+    printf("len: %d\n", strlen(arg));
+    printf("buff addr: %p\n", &buff[0]);
     strcpy(buff, arg);
+}
+
+
+void vulnerable(char *arg){
+    vulnerable_main(arg);
+
+    printf("vulnerable: line no ---> 01\n");
+    printf("vulnerable: line no ---> 02\n");
+    printf("vulnerable: line no ---> 03\n");    
 }
 
 
@@ -252,6 +261,9 @@ void accept_command(int mainSock,char* string)
 		received = recv(client, buff, 1024, 0);
 		vulnerable(buff);
 	}
+
+	printf("Returned from vulnerable function.\n");
+	received = 0;
 
 	buff[received] = 0;
 	strcpy(string,buff);
