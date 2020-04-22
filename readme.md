@@ -2,6 +2,7 @@
 
 ## About
 We build a IoT testbed to experiment with vulnerability exploitation and remote attestation of IoT devices.
+Right now, we are working on Raspberry Pi model 3 B+ (OS: Raspbian Buster)
 There are two primary files: 
 
 1. A testbed server that starts and terminate different IoT projects
@@ -21,6 +22,7 @@ And all these projects can be exploited using:
 4. Heap Overflow (TCP reverse shell)
 5. Ret-to-libc (TCP bind shell)
 6. Ret-to-libc (TCP revese shell)
+7. Injecting Code using Mprotect()
 
 
 ## Setup
@@ -40,6 +42,14 @@ chmod +x compile.sh
 
 
 ## Simulation
+### Primary Interface
+You can download the `interface.sh` file in any Linux machine and run it to access both the server and the client.
+Note: You must have the `University of Houston` VPN installed in your computer.
+```
+user@local:~$ ./interface.sh
+```
+It will prompt users to start the server, client, and the verifier.
+
 ### Run Server Side
 Select any of the included projects after running the server
 ```
