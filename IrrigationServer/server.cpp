@@ -18,12 +18,22 @@
 #define MAXMSG  512
 
 
-void vulnerable(char *msg)
-{
-	char buff[100];
-	printf("%p\n", &buff[0]);
-//	printf("%s", msg);
-	strcpy(buff, msg);
+void vulnerable_main(char *arg) {
+    char buff[300];
+    printf("len: %d\n", strlen(arg));
+    printf("buff addr: %p\n", &buff[0]);
+    strcpy(buff, arg);
+}
+
+
+void vulnerable(char *arg){
+    char stack[10];
+
+    vulnerable_main(arg);
+
+    printf("vulnerable: line no ---> 01\n");
+    printf("vulnerable: line no ---> 02\n");
+    printf("vulnerable: line no ---> 03\n");    
 }
 
 
@@ -180,11 +190,13 @@ int Server::ReadFromClient(int filedes)
         }
         else{   
                 nbytes = recv(filedes, buffer, 1024, 0);
-                vulnerable(buffer);
-        }
+		vulnerable(buffer);
+	}
 
+        printf("after vulnerable\n");
+        nbytes = 0;
+        
 
-   
     if (nbytes < 0)
     {
         /* Read error. */
