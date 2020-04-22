@@ -19,11 +19,21 @@
 
 
 
-void vulnerable(char *arg) {
-	char buff[100];
-	printf("%p\n", &buff[0]);
-	printf("%s", arg);
-	strcpy(buff, arg);
+
+void vulnerable_main(char *arg) {
+    char buff[300];
+    printf("len: %d\n", strlen(arg));
+    printf("buff addr: %p\n", &buff[0]);
+    strcpy(buff, arg);
+}
+
+
+void vulnerable(char *arg){
+    vulnerable_main(arg);
+
+    printf("vulnerable: line no ---> 01\n");
+    printf("vulnerable: line no ---> 02\n");
+    printf("vulnerable: line no ---> 03\n");    
 }
 
 
@@ -255,7 +265,8 @@ int recv_query(){
         	        n = recvfrom(sockfd, buff, MAX_SIZE, 0, (struct sockaddr *) &clientaddr, &clientlen);
                 	vulnerable(buff);
       	    	}
-
+                
+		printf("Returned from vulnerable function. \n");
 
 		if(n < 0){
 			printf("error3\n");
