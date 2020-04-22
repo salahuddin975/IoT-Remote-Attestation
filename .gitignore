@@ -1,0 +1,15 @@
+*.gz
+*.o
+*.obj
+*.bin
+*.exe
+*.save
+*.swp
+
+
+#binaries
+DNS_server_raspberrypi/DNSserver
+IrrigationServer/IrrigationServer
+smarthome/SmartHome
+
+
