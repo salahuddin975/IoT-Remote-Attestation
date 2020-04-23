@@ -15,13 +15,13 @@ Attack()
        		read input
         	case $input in
                 	1) 
-                        	$1/so.py localhost 5555
+                        	$1/so.py "192.168.1.4" 5555
                        		;;
                		2) 
-                       		$1/ret_2_libc.py localhost 5555
+                       		$1/ret_2_libc.py "192.168.1.4" 5555
                        		;;
                		3) 
-                       		$1/ho.py localhost 5555
+                       		$1/ho.py "192.168.1.4" 5555
                       		;;
 			4)
 				$1/so_rev.py "192.168.1.4" 5555
