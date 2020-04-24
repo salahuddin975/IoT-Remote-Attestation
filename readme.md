@@ -46,14 +46,16 @@ chmod +x compile.sh
 You can download the `interface.sh` file in any Linux machine and run it to access both the server and the client.
 Note: You must have the `University of Houston` VPN installed in your computer.
 ```
-user@local:~$ ./interface.sh
+user@local:~$ ./testbed.sh
 ```
-It will prompt users to start the server, client, and the verifier.
+It will prompt users to start the server, client, and the verifier. 
+
+Note: For now, Verifier Node is not included.
 
 ### Run Server Side
 Select any of the included projects after running the server
 ```
-$ ./testbed.sh
+$ ./server.sh
 ```
 
 ### Run Client Side
@@ -61,3 +63,14 @@ Select particular project and related exploit after running the client
 ```
 $ ./client.sh
 ```
+
+
+## Utilities
+In the utility folder we include the utility files and programs. Included resources are:
+1. Shellcode Generators
+2. Basic Server and Client program
+3. Thumb Mode Instructions
+4. Shellcode Testers
+5. Used NOP instruction
+6. Example Bind Shell
+7. Example Reverse Shell
