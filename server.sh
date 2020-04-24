@@ -11,7 +11,8 @@ Attack()
 		echo "	Heap Overflow (bind shell) --> 5"
 		echo "	Stack overflow (reverse shell) --> 6"
 		echo "	Heap Overflow (reverse shell) --> 7"
-		echo "	Select new server --> 8"
+		echo "	Code injection attack --> 8"
+		echo "	Select new server --> 9"
 
        		read input
         	case $input in
@@ -36,8 +37,11 @@ Attack()
 			7)
 				$1 3
 				;;
-
 			8)
+				echo "Running: " $1, " Code injection attack" 
+				$1 1
+				;;
+			9)
 				return
 				;;
                		*) 
@@ -49,7 +53,8 @@ Attack()
 				echo "	Heap Overflow (bind shell) --> 5"
 				echo "	Stack overflow (reverse shell) --> 6"
 				echo "	Heap Overflow (reverse shell) --> 7"
-				echo "	Select new server --> 8"
+				echo "	Code injection attack --> 8"
+				echo "	Select new server --> 9"
 				;;
        		esac
 	done
