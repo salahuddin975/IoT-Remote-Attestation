@@ -7,10 +7,12 @@ Attack()
         	echo "	Stack overflow --> 1"
         	echo "	Ret2libc --> 2"
         	echo "	Heap overflow --> 3"
-		echo "	Stack overflow (reverse shell) --> 4"
-		echo "	Ret2libc (reverse shell) --> 5"
-		echo "	Heap Overflow (reverse shell) --> 6"
-		echo "	Select new server --> 7"
+		echo "	Stack overflow (bind shell) --> 4"
+		echo "	Heap Overflow (bind shell) --> 5"
+		echo "	Stack overflow (reverse shell) --> 6"
+		echo "	Heap Overflow (reverse shell) --> 7"
+		echo "	Code injection attack --> 8"
+		echo "	Select new server --> 9"
 
        		read input
         	case $input in
@@ -27,25 +29,33 @@ Attack()
 				$1 1
 				;;
 			5)
-				$1 2
-				;;
-			6)	
 				$1 3
 				;;
-
+			6)	
+				$1 1
+				;;
 			7)
+				$1 3
+				;;
+			8)
+				echo "Running: " $1, " Code injection attack" 
+				$1 1
+				;;
+			9)
 				return
 				;;
                		*) 
-		                echo "Please choose a particular attack..."
-                		echo "  Stack overflow --> 1"
-		                echo "  Ret2libc --> 2"
-        		        echo "  Heap overflow --> 3"
-                		echo "  Stack overflow (reverse shell) --> 4"
-		                echo "  Ret2libc (reverse shell) --> 5"
-        	        	echo "  Heap Overflow (reverse shell) --> 6"
-                		echo "  Select new server --> 7"
-                       		;;
+        			echo "Please choose a particular attack..."
+        			echo "	Stack overflow --> 1"
+		        	echo "	Ret2libc --> 2"
+        			echo "	Heap overflow --> 3"
+				echo "	Stack overflow (bind shell) --> 4"
+				echo "	Heap Overflow (bind shell) --> 5"
+				echo "	Stack overflow (reverse shell) --> 6"
+				echo "	Heap Overflow (reverse shell) --> 7"
+				echo "	Code injection attack --> 8"
+				echo "	Select new server --> 9"
+				;;
        		esac
 	done
 }
