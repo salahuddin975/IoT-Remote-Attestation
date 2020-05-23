@@ -12,16 +12,18 @@
 #define _LOG_STR_MONITOR "\033[35;01m[monitor]\033[00m"
 #define _LOG_STR_CLIENT "\033[36;01m[ client]\033[00m"
 
-// EDITED HERE
-#define _LOG_FILE_PATH "CFI.log"
+/*
+ * EDITED HERE
+ * #define _LOG_FILE_PATH "CFI.log"
+ */
 
 #ifdef SILENT
 #define _LOG(...)
 #else
 #define _LOG(...)                               \
   do {                                          \
-    FILE* fp = fopen(_LOG_FILE_PATH,"a+");      \
-    if (fp!=NULL) fprintf(fp,__VA_ARGS__);      \
+    /*FILE* fp = fopen(_LOG_FILE_PATH,"a+");      \
+    if (fp!=NULL) fprintf(fp,__VA_ARGS__);      \*/
     fprintf(stderr, __VA_ARGS__);               \
   } while(0)
 #endif

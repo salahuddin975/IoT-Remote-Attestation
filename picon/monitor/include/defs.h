@@ -49,8 +49,14 @@
 extern unsigned int OPTION_sm_trace;
 extern unsigned int OPTION_sm_dump;
 extern unsigned int OPTION_nb_preload_monitor_ok_answers;
+/* EDITED here
+ * */
+extern unsigned int CFI_LOCK;
+extern unsigned size_t CFI_HASH;
 
-
+size_t hashchain(size_t origin_cfi,std::string new_cfi);
+bool check(char *src, char *dst);
+int open_socket();
 
 
 #ifdef TIMEOUT

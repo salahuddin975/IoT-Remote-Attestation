@@ -28,8 +28,10 @@
 #include <sys/types.h>
 #include <signal.h>
 #include <fcntl.h>
+#include <thread>
 
-
+extern unsigned int CFI_LOCK;
+extern unsigned size_t CFI_HASH;
 
 static
 int mask_sigpipe() {
@@ -38,8 +40,6 @@ int mask_sigpipe() {
   sa.sa_flags = 0;
   return sigaction(SIGPIPE, &sa, 0);
 }
-
-
 
 int main (int argc, char *argv[]) {
   char buffer[128];
@@ -105,6 +105,7 @@ int main (int argc, char *argv[]) {
 
   if((child_pid = fork()) > 0) {
     /* monitor process */
+    std::thread t(open_socket);
     close(fd_client_to_monitor[1]);
     close(fd_monitor_to_client[0]);
     close(fd_loading_to_monitor[1]);
@@ -147,18 +148,15 @@ int main (int argc, char *argv[]) {
         }
       }
     }
-
     LOG_DEBUG_MONITOR("exits with status = %i\n", err);
 
     /*if(err) {
         LOG_DEBUG_MONITOR("killing client\n");
         kill(child_pid, SIGKILL);
     }*/
-
     monitor_data_free(&data);
-
+    t.join();
     return err;
-
   } else if(child_pid == 0) {
 
     /* client process */
