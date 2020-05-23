@@ -75,7 +75,7 @@ int monitor_run(const monitor_data data) {
   MONITOR_SIGNAL_TIMEOUT(data.fd_client_to_monitor, fdrs, error);
   if(unlikely(error)) {
     LOG_ERROR_MONITOR("timeout waiting for client signal\n");
-    goto monitor_run_exit;
+      /*goto monitor_run_exit;*/
   }
   READ_CLIENT_SIGNAL(data.fd_client_to_monitor, sig, error);
 
@@ -90,7 +90,7 @@ int monitor_run(const monitor_data data) {
                   (current_function != sig.function) ||
                   (curblock != sig.block))) {
         error = 4;
-        goto monitor_run_exit;
+          /*goto monitor_run_exit;*/
       }
       state = SM_STATE_ExpectJump;
       break;
@@ -104,7 +104,7 @@ int monitor_run(const monitor_data data) {
                   (sig.block >= current_function_data->nb_blocks) ||
                   (!(current_function_data->control_flow_graph[curblock][sig.block])))) {
         error = 4;
-        goto monitor_run_exit;
+          /*goto monitor_run_exit;*/
       }
       if(unlikely(OPTION_sm_trace &&
                   (current_function_data->immediate_post_dominator[topblock] == sig.block))) {
@@ -122,7 +122,7 @@ int monitor_run(const monitor_data data) {
                   (sig.function >= current_module_data->nb_functions) ||
                   (!(current_module_data->call_graph[current_function][sig.function])))) {
         error = 4;
-        goto monitor_run_exit;
+          /*goto monitor_run_exit;*/
       }
       if(unlikely(OPTION_sm_trace)) {
         BLOCK_STACK_PUSH(blocks, topblock, error);
@@ -155,13 +155,13 @@ int monitor_run(const monitor_data data) {
       if(unlikely(state == SM_STATE_Ready)) {
         if(unlikely(sig.module >= data.nb_modules)) {
           error = 6;
-          goto monitor_run_exit;
+            /*goto monitor_run_exit;*/
         }
         current_module_data = &(data.modules[sig.module]);
         if(unlikely((sig.function >= current_module_data->nb_functions) ||
                     (!FUNCTION_IS_ENTRYPOINT(current_module_data->functions[sig.function])))) {
           error = 7;
-          goto monitor_run_exit;
+            /*goto monitor_run_exit;*/
         } else {
           curblock = topblock = FUNCTION_ENTRY_BLOCK_ID;
           current_module = sig.module;
@@ -173,7 +173,7 @@ int monitor_run(const monitor_data data) {
                          (current_function != sig.function) ||
                          (curblock != FUNCTION_ENTRY_BLOCK_ID))) {
         error = 4;
-        goto monitor_run_exit;
+          /*goto monitor_run_exit;*/
       }
       state = SM_STATE_InFunction;
       break;
@@ -185,17 +185,17 @@ int monitor_run(const monitor_data data) {
                   (current_module != sig.module) ||
                   (current_function != sig.function))) {
         error = 4;
-        goto monitor_run_exit;
+          /*goto monitor_run_exit;*/
       }
       if(unlikely(CALL_STACK_IS_EMPTY(calls))) {
         if(unlikely(!FUNCTION_IS_ENTRYPOINT(current_module_data->functions[current_function]))) {
           error = 7;
-          goto monitor_run_exit;
+            /*goto monitor_run_exit;*/
         }
         state = SM_STATE_Ready;
         /* simplify this case since unlikely */
         WRITE_MONITOR_ANSWER(data.fd_monitor_to_client, ok_resp, error);
-        goto monitor_run_exit;
+          /*goto monitor_run_exit;*/
         /**/
       } else {
         CALL_STACK_POP(calls, ncall);
@@ -206,7 +206,7 @@ int monitor_run(const monitor_data data) {
         BLOCK_STACK_RESTORE_TOP(blocks, ncall.blocks_sp);
         if(unlikely(BLOCK_STACK_IS_EMPTY(blocks))) {
           error = 7;
-          goto monitor_run_exit;
+            /*goto monitor_run_exit;*/
         }
         BLOCK_STACK_POP(blocks, curblock);
         if(unlikely(OPTION_sm_trace)) {
@@ -223,7 +223,7 @@ int monitor_run(const monitor_data data) {
                   (sig.function >= current_module_data->nb_functions) ||
                   (!(current_module_data->call_graph[current_function][sig.function])))) {
         error = 4;
-        goto monitor_run_exit;
+          /*goto monitor_run_exit;*/
       }
       state = SM_STATE_InFunction;
       break;
@@ -232,7 +232,7 @@ int monitor_run(const monitor_data data) {
     default:
       LOG_ERROR_MONITOR("malformed sig received\n");
       error = 5;
-      goto monitor_run_exit;
+      /*goto monitor_run_exit;*/
     }
 
     WRITE_MONITOR_ANSWER(data.fd_monitor_to_client, ok_resp, error);
@@ -240,7 +240,7 @@ int monitor_run(const monitor_data data) {
     MONITOR_SIGNAL_TIMEOUT(data.fd_client_to_monitor, fdrs, error);
     if(unlikely(error)) {
       LOG_ERROR_MONITOR("timeout waiting for client signal\n");
-      goto monitor_run_exit;
+        /*goto monitor_run_exit;*/
     }
     READ_CLIENT_SIGNAL(data.fd_client_to_monitor, sig, error);
   }

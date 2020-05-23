@@ -141,7 +141,7 @@ int main (int argc, char *argv[]) {
         }
         i = 0;
         LOG_DEBUG_MONITOR("%u finis are expected\n", nb);
-        while((i < nb) && !err) {
+        while(i < nb) {
           err = monitor_run(data);
           ++i;
         }
@@ -150,10 +150,10 @@ int main (int argc, char *argv[]) {
 
     LOG_DEBUG_MONITOR("exits with status = %i\n", err);
 
-   // if(err) {
-      //LOG_DEBUG_MONITOR("killing client\n");
-      //kill(child_pid, SIGKILL);
-   //}
+    /*if(err) {
+        LOG_DEBUG_MONITOR("killing client\n");
+        kill(child_pid, SIGKILL);
+    }*/
 
     monitor_data_free(&data);
 
