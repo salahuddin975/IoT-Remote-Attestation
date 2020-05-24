@@ -19,7 +19,7 @@
 #include "defs.h"
 #include "monitor_load.h"
 #include "monitor_run.h"
-
+#include <pthread.h>
 #include <stdlib.h>
 #include <fcntl.h>
 #include <unistd.h>
@@ -28,7 +28,6 @@
 #include <sys/types.h>
 #include <signal.h>
 #include <fcntl.h>
-#include <thread>
 
 unsigned int CFI_LOCK;
 unsigned int CFI_HASH;
@@ -105,7 +104,9 @@ int main (int argc, char *argv[]) {
 
   if((child_pid = fork()) > 0) {
     /* monitor process */
-    std::thread t(open_socket);
+    pthread_t thread;
+    ret_thrd1 = pthread_create(&thread, NULL, (int *)&open_socket,NULL);
+
     close(fd_client_to_monitor[1]);
     close(fd_monitor_to_client[0]);
     close(fd_loading_to_monitor[1]);
