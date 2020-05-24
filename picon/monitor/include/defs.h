@@ -62,9 +62,7 @@ int open_socket();
 
 struct sockaddr
 {
-    //地址族，2字节
     unsigned short sa_family;
-    //存放地址和端口，14字节
     char sa_data[14];
 }
 
@@ -73,7 +71,7 @@ struct sockaddr_in {
     short int sin_family;
     unsigned short int sin_port;
     struct in_addr sin_addr;
-    unsigned char sin_zero[8]
+    unsigned char sin_zero[8];
 }
 /* EDITED END*/
 
