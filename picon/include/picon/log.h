@@ -2,7 +2,7 @@
 #define __LOG_H__
 
 #include <stdio.h>
-
+#include <stdbool.h>
 
 
 #define _LOG_STR_ERROR "\033[31;01m[error]\033[00m"

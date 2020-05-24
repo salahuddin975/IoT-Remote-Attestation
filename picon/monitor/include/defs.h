@@ -27,7 +27,20 @@
 #include <picon/shared.h>
 #include <picon/log.h>
 
-
+// EDITED BEGIN
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <errno.h>
+#include <netdb.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <unistd.h>
+// EDITED END
 
 
 #define ENV_SM_TRACE "CFI_TRACE"
@@ -49,15 +62,37 @@
 extern unsigned int OPTION_sm_trace;
 extern unsigned int OPTION_sm_dump;
 extern unsigned int OPTION_nb_preload_monitor_ok_answers;
-/* EDITED here
- * */
-extern unsigned int CFI_LOCK;
-extern size_t CFI_HASH;
 
-size_t hashchain(size_t origin_cfi,std::string new_cfi);
-bool check(char *src, char *dst);
+/* EDITED BEGIN*/
+#define SERVER_PORT 6666
+extern unsigned int CFI_LOCK;
+extern unsigned int CFI_HASH;
+unsigned int ELFHash(char *str)
+unsigned int hashchain(char *new_cfi);
 int open_socket();
 
+
+
+struct sockaddr
+{
+    //地址族，2字节
+    unsigned short sa_family;
+    //存放地址和端口，14字节
+    char sa_data[14];
+}
+
+
+struct sockaddr_in {
+    //地址族
+    short int sin_family;
+    //端口号(使用网络字节序)
+    unsigned short int sin_port;
+    //地址
+    struct in_addr sin_addr;
+    //8字节数组，全为0，该字节数组的作用只是为了让两种数据结构大小相同而保留的空字节
+    unsigned char sin_zero[8]
+}
+/* EDITED END*/
 
 #ifdef TIMEOUT
 
