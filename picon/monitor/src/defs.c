@@ -123,7 +123,7 @@ int open_socket(){
                 CFI_LOCK = 1;
             }
             else if(strcmp(buffer, "Finish")) {
-                printf("Stop Recording CFI", buff);
+                printf("Stop Recording CFI");
                 if (CFI_LOCK == 1) {
                     if (CFI_HASH != 0) send(client, CFI_HASH, sizeof(CFI_HASH), 0);
                 }
