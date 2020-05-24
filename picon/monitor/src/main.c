@@ -30,8 +30,8 @@
 #include <fcntl.h>
 #include <thread>
 
-extern unsigned int CFI_LOCK;
-extern unsigned int CFI_HASH;
+unsigned int CFI_LOCK;
+unsigned int CFI_HASH;
 
 static
 int mask_sigpipe() {

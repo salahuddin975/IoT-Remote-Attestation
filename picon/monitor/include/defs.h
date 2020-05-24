@@ -40,7 +40,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
-// EDITED END
+/*EDITED END*/
 
 
 #define ENV_SM_TRACE "CFI_TRACE"
@@ -83,13 +83,9 @@ struct sockaddr
 
 
 struct sockaddr_in {
-    //地址族
     short int sin_family;
-    //端口号(使用网络字节序)
     unsigned short int sin_port;
-    //地址
     struct in_addr sin_addr;
-    //8字节数组，全为0，该字节数组的作用只是为了让两种数据结构大小相同而保留的空字节
     unsigned char sin_zero[8]
 }
 /* EDITED END*/

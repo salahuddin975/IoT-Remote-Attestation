@@ -2,7 +2,6 @@
 #define __LOG_H__
 
 #include <stdio.h>
-#include <stdbool.h>
 
 
 #define _LOG_STR_ERROR "\033[31;01m[error]\033[00m"
@@ -12,18 +11,11 @@
 #define _LOG_STR_MONITOR "\033[35;01m[monitor]\033[00m"
 #define _LOG_STR_CLIENT "\033[36;01m[ client]\033[00m"
 
-/*
- * EDITED HERE
- * #define _LOG_FILE_PATH "CFI.log"
- */
-
 #ifdef SILENT
 #define _LOG(...)
 #else
 #define _LOG(...)                               \
   do {                                          \
-    /*FILE* fp = fopen(_LOG_FILE_PATH,"a+");      \
-    if (fp!=NULL) fprintf(fp,__VA_ARGS__);      \*/
     fprintf(stderr, __VA_ARGS__);               \
   } while(0)
 #endif

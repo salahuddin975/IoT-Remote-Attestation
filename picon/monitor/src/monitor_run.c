@@ -25,8 +25,8 @@
 
 #include <unistd.h>
 
-extern unsigned int CFI_LOCK;
-extern unsigned int CFI_HASH;
+unsigned int CFI_LOCK;
+unsigned int CFI_HASH;
 
 int monitor_run(const monitor_data data) {
   register monitor_state_t state;
