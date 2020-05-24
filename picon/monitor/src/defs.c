@@ -118,15 +118,16 @@ int open_socket(){
             buffer[iDataNum] = '\0';
             if(strcmp(buffer, "quit") == 0)
                 break;
-            if(strcmp(buffer, "Start") == 0)){
+            if(strcmp(buffer, "Start") == 0){
                 printf("Start Recording CFI");
-                CFI_LOCK = 1
-            }else if(strcmp(buffer, "Finish")) {
+                CFI_LOCK = 1;
+            }
+            else if(strcmp(buffer, "Finish")) {
                 printf("Stop Recording CFI", buff);
                 if (CFI_LOCK == 1) {
                     if (CFI_HASH != 0) send(client, CFI_HASH, sizeof(CFI_HASH), 0);
                 }
-                CFI_LOCK = 0
+                CFI_LOCK = 0;
             }
             if(strcmp(buffer, "quit") == 0)
                 break;
