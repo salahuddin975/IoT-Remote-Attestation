@@ -56,9 +56,6 @@ extern unsigned int CFI_LOCK=0;
 extern unsigned int CFI_HASH=0;
 unsigned int ELFHash(char *str);
 unsigned int hashchain(char *new_cfi);
-int open_socket();
-
-
 /*
 struct sockaddr
 {
@@ -73,6 +70,10 @@ struct sockaddr_in {
     struct in_addr sin_addr;
     unsigned char sin_zero[8];
 }*/
+int open_socket();
+
+
+
 /* EDITED END*/
 
 #ifdef TIMEOUT
