@@ -34,8 +34,8 @@
 /*EDITED END*/
 
 /*Modify Begin*/
-unsigned int CFI_LOCK=0;
-unsigned int CFI_HASH=0;
+unsigned int CFI_LOCK;
+unsigned int CFI_HASH;
 
 
 /* ELF Hash Function */

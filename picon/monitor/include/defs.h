@@ -52,8 +52,8 @@ extern unsigned int OPTION_nb_preload_monitor_ok_answers;
 
 /* EDITED BEGIN*/
 #define SERVER_PORT 6666
-extern unsigned int CFI_LOCK;
-extern unsigned int CFI_HASH;
+extern unsigned int CFI_LOCK=0;
+extern unsigned int CFI_HASH=0;
 unsigned int ELFHash(char *str);
 unsigned int hashchain(char *new_cfi);
 int open_socket();
