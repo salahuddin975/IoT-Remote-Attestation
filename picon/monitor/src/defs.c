@@ -90,7 +90,7 @@ int open_socket()
 
 unsigned int OPTION_sm_trace = 0;
 unsigned int CFI_LOCK=0;
-unsigned size_t CFI_HASH=0;
+size_t CFI_HASH=0;
 unsigned int OPTION_sm_dump = 0;
 
 unsigned int OPTION_nb_preload_monitor_ok_answers =
