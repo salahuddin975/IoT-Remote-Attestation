@@ -159,11 +159,11 @@ int main (int argc, char *argv[]) {
         kill(child_pid, SIGKILL);
     }*/
     monitor_data_free(&data);
+    /*
     void *retval;
-    pthread_join(thread, &retval);
+    pthread_join(thread, &retval);*/
     return err;
   } else if(child_pid == 0) {
-
     /* client process */
     close(fd_client_to_monitor[0]);
     close(fd_monitor_to_client[1]);

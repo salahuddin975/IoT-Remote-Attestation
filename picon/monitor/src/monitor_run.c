@@ -278,7 +278,7 @@ int monitor_run(const monitor_data data) {
     MONITOR_SIGNAL_TIMEOUT(data.fd_client_to_monitor, fdrs, error);
     if(unlikely(error)) {
       LOG_ERROR_MONITOR("timeout waiting for client signal\n");
-        /*goto monitor_run_exit;*/
+      goto monitor_run_exit;
     }
     READ_CLIENT_SIGNAL(data.fd_client_to_monitor, sig, error);
   }
