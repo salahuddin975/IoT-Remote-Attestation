@@ -33,10 +33,10 @@
 #include <unistd.h>
 /*EDITED END*/
 
-/*Modify
-unsigned int CFI_LOCK;
-unsigned int CFI_HASH;
-Begin*/
+/*Modify Begin*/
+unsigned int CFI_LOCK=0;
+unsigned int CFI_HASH=0;
+
 
 /* ELF Hash Function */
 unsigned int ELFHash(char *str)
