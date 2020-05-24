@@ -25,8 +25,10 @@
 
 #include <unistd.h>
 
+/*Modify
 unsigned int CFI_LOCK;
 unsigned int CFI_HASH;
+Begin*/
 
 int monitor_run(const monitor_data data) {
   register monitor_state_t state;

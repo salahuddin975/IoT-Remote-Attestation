@@ -29,8 +29,10 @@
 #include <signal.h>
 #include <fcntl.h>
 
+/*Modify
 unsigned int CFI_LOCK;
 unsigned int CFI_HASH;
+Begin*/
 
 static
 int mask_sigpipe() {
