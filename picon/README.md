@@ -57,13 +57,24 @@ The following files can be edited to change or set options:
 The overall process is:
 
 * build each source file into LLVM bitcode, using `clang -emit-llvm`
-* run the Picon LLVM pass on each bitcode file, to produced the
+* run the Picon LLVM pass on each bitcode file using `opt -load /usr/lib/picon/libCFI.so -cfi -cfi-level=1 -cfi-ignore=ignored_functions.txt -cfi-prefix=build.cfi/{filename} -S -o {filename}_cfi.bc {filename}.bc`, to produced the
   processed bitcode file, and the temporary Picon files
 * run `picon-prelink` on the temporary picon files to produce the
-  injected source code
+  injected source code using `/usr/bin/picon-prelink build.cfi/{filename}_CFI > build.cfi/cfi_injected_{filename}.c`
 * build the injected source code, and all processed bitcode files to
   object files
+  
+```$xslt
+clang -I/usr/include -Wall -Wextra -Wtype-limits -fstrict-overflow -Wsign-compare -DCFI_DEBUG -c -o build.cfi/cfi_injected_{filename}.o build.cfi/cfi_injected_{filename}.c
+clang -I/usr/include -Wall -Wextra -Wtype-limits -fstrict-overflow -Wsign-compare -DCFI_DEBUG -c -o build.cfi/{filename}.o build.cfi/{filename}_cfi.bc
+```
+
 * link all object files (including the injected code)
+```$xslt
+clang  -o build.cfi/{filename} build.cfi/cfi_injected_{filename}.o build.cfi/{filename}.o
+```
+
+
 
 The resulting binary *must* be executed by the Picon monitor.
 
