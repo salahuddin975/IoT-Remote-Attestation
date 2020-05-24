@@ -79,7 +79,7 @@ int monitor_run(const monitor_data data) {
             char cfi_str[100];
             int str_len = 0;
             str_len = snprintf(cfi_str, sizeof(cfi_str),"received BEFORE_JUMP (%u,%u,%u)\n", sig.module, sig.function, sig.block);
-            CFI_HASH = hashchain(CFI_HASH,cfi_str);
+            CFI_HASH = hashchain(cfi_str);
         }
       if(unlikely((state != SM_STATE_InFunction) ||
                   (current_module != sig.module) ||
@@ -99,7 +99,7 @@ int monitor_run(const monitor_data data) {
             char cfi_str[100];
             int str_len = 0;
             str_len = snprintf(cfi_str, sizeof(cfi_str),"received AFTER_JUMP (%u,%u,%u)\n", sig.module, sig.function, sig.block);
-            CFI_HASH = hashchain(CFI_HASH,cfi_str);
+            CFI_HASH = hashchain(cfi_str);
         }
       if(unlikely((state != SM_STATE_ExpectJump) ||
                   (current_module != sig.module) ||
@@ -125,7 +125,7 @@ int monitor_run(const monitor_data data) {
             char cfi_str[100];
             int str_len = 0;
             str_len = snprintf(cfi_str, sizeof(cfi_str),"received CALL (%u,%u)\n", sig.module, sig.function);
-            CFI_HASH = hashchain(CFI_HASH,cfi_str);
+            CFI_HASH = hashchain(cfi_str);
         }
       if(unlikely((state != SM_STATE_InFunction) ||
                   (sig.function >= current_module_data->nb_functions) ||
@@ -153,7 +153,7 @@ int monitor_run(const monitor_data data) {
               char cfi_str[100];
               int str_len = 0;
               str_len = snprintf(cfi_str, sizeof(cfi_str),"\trelocated CALL (%u,%u)\n", MODULE_FUNCTION_GET_MODULE(some_reloc), MODULE_FUNCTION_GET_FUNCTION(some_reloc));
-              CFI_HASH = hashchain(CFI_HASH,cfi_str);
+              CFI_HASH = hashchain(cfi_str);
           }
         current_module = MODULE_FUNCTION_GET_MODULE(some_reloc);
         current_function = MODULE_FUNCTION_GET_FUNCTION(some_reloc);
@@ -172,7 +172,7 @@ int monitor_run(const monitor_data data) {
             char cfi_str[100];
             int str_len = 0;
             str_len = snprintf(cfi_str, sizeof(cfi_str),"received ENTER (%u,%u)\n", sig.module, sig.function);
-            CFI_HASH = hashchain(CFI_HASH,cfi_str);
+            CFI_HASH = hashchain(cfi_str);
         }
 
       if(unlikely(state == SM_STATE_Ready)) {
@@ -209,7 +209,7 @@ int monitor_run(const monitor_data data) {
             char cfi_str[100];
             int str_len = 0;
             str_len = snprintf(cfi_str, sizeof(cfi_str),"received EXIT (%u,%u)\n", sig.module, sig.function);
-            CFI_HASH = hashchain(CFI_HASH,cfi_str);
+            CFI_HASH = hashchain(cfi_str);
         }
       if(unlikely((state != SM_STATE_InFunction) ||
                   (current_module != sig.module) ||
@@ -253,7 +253,7 @@ int monitor_run(const monitor_data data) {
             char cfi_str[100];
             int str_len = 0;
             str_len = snprintf(cfi_str, sizeof(cfi_str),"received RETURNED (%u,%u)\n", sig.module, sig.function);
-            CFI_HASH = hashchain(CFI_HASH,cfi_str);
+            CFI_HASH = hashchain(cfi_str);
         }
       if(unlikely((state != SM_STATE_ExpectReturn) ||
                   (sig.function >= current_module_data->nb_functions) ||

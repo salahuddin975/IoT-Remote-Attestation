@@ -31,7 +31,7 @@
 #include <thread>
 
 extern unsigned int CFI_LOCK;
-extern size_t CFI_HASH;
+extern unsigned int CFI_HASH;
 
 static
 int mask_sigpipe() {
