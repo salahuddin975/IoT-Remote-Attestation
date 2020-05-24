@@ -59,7 +59,7 @@ unsigned int hashchain(char *new_cfi);
 int open_socket();
 
 
-
+/*
 struct sockaddr
 {
     unsigned short sa_family;
@@ -72,7 +72,7 @@ struct sockaddr_in {
     unsigned short int sin_port;
     struct in_addr sin_addr;
     unsigned char sin_zero[8];
-}
+}*/
 /* EDITED END*/
 
 #ifdef TIMEOUT
