@@ -27,20 +27,7 @@
 #include <picon/shared.h>
 #include <picon/log.h>
 
-// EDITED BEGIN
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <errno.h>
-#include <netdb.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <unistd.h>
-/*EDITED END*/
+
 
 
 #define ENV_SM_TRACE "CFI_TRACE"
@@ -67,7 +54,7 @@ extern unsigned int OPTION_nb_preload_monitor_ok_answers;
 #define SERVER_PORT 6666
 extern unsigned int CFI_LOCK;
 extern unsigned int CFI_HASH;
-unsigned int ELFHash(char *str)
+unsigned int ELFHash(char *str);
 unsigned int hashchain(char *new_cfi);
 int open_socket();
 
