@@ -156,7 +156,8 @@ int main (int argc, char *argv[]) {
         kill(child_pid, SIGKILL);
     }*/
     monitor_data_free(&data);
-    t.join();
+    void *retval;
+    pthread_join(thread, &retval);
     return err;
   } else if(child_pid == 0) {
 
