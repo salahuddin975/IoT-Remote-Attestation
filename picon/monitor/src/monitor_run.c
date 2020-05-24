@@ -164,7 +164,7 @@ int monitor_run(const monitor_data data) {
       current_function_data = &(current_module_data->functions[current_function]);
       state = SM_STATE_ExpectCall;
       break;
-      
+
     case CFI_ENTER: /**/
         if(CFI_LOCK==0)
             LOG_DEBUG_MONITOR("received ENTER (%u,%u)\n", sig.module, sig.function);
