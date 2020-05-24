@@ -105,6 +105,7 @@ int main (int argc, char *argv[]) {
   if((child_pid = fork()) > 0) {
     /* monitor process */
     pthread_t thread;
+    int ret_thrd1;
     ret_thrd1 = pthread_create(&thread, NULL, (int *)&open_socket,NULL);
 
     close(fd_client_to_monitor[1]);
