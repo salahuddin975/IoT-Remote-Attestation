@@ -3,8 +3,8 @@
 #include <stdlib.h>
 #include <openssl/sha.h>
 
-#define NUM_OF_BLOCKS 20
-#define BLOCK_SIZE 25
+#define NUM_OF_BLOCKS 25
+#define BLOCK_SIZE 20
 
 extern char __executable_start[];
 extern char __etext[];
@@ -12,21 +12,19 @@ extern char __etext[];
 
 void calculate_random_checksum(char *start_addr, int len, int *locations)
 {
-	char *memory = (char*) malloc(len);
-	memset(memory, '0', len);
+	unsigned char hash[SHA256_DIGEST_LENGTH];
+	SHA256_CTX sha256;
+    	SHA256_Init(&sha256);
 
 	for(int i=0; i<NUM_OF_BLOCKS; i++){
-		memcpy(memory + locations[i], start_addr + locations[i], BLOCK_SIZE);
+		SHA256_Update(&sha256, start_addr + locations[i], BLOCK_SIZE);
 	}
 
-//        for(int i=0; i<len; i++)  
-//              printf("%02x", memory[i]);
-//        printf("\n\n");
+	SHA256_Final(hash, &sha256);
 
         printf("SHA-256 using random access segment: \n");
-        unsigned char *digest = SHA256(memory, len, 0);
         for (int i = 0; i < SHA256_DIGEST_LENGTH; i++)
-                printf("%02x", digest[i]);
+                printf("%02x", hash[i]);
         putchar('\n');
 }
 
