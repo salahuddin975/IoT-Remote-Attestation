@@ -410,10 +410,10 @@ int compute_relocations_of_module(monitor_data * const data,
 
       if(not_resolved) {
         LOG_DEBUG_MONITOR("\tno relocation found for id=%u (name=%s)\n", j, midata->functions[j].name);
-        if(unresolved_is_fatal) {
+        /*if(unresolved_is_fatal) {
           LOG_ERROR_MONITOR("unresolved external function : %s\n", midata->functions[j].name);
           return 1;
-        }
+        }*/
       }
     }
   }
