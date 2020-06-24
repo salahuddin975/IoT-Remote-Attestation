@@ -95,19 +95,19 @@ int open_socket(){
     }
     while(1)
     {
-        printf("监听端口: %d\n", SERVER_PORT);
+        printf("Listening on port: %d\n", SERVER_PORT);
         client = accept(serverSocket, (struct sockaddr*)&clientAddr, (socklen_t*)&addr_len);
         if(client < 0)
         {
             perror("accept");
             continue;
         }
-        printf("等待消息...\n");
+        printf("Waiting for messages...\n");
         printf("IP is %s\n", inet_ntoa(clientAddr.sin_addr));
         printf("Port is %d\n", htons(clientAddr.sin_port));
         while(1)
         {
-            printf("读取消息:");
+            printf("Recieving messages:");
             buffer[0] = '\0';
             iDataNum = recv(client, buffer, 1024, 0);
             if(iDataNum < 0)
