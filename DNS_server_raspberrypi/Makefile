@@ -1,5 +1,5 @@
 all:
-	gcc dns.c main.c xxhash.c -fno-stack-protector -lpthread -z execstack -o DNSserver
+	gcc dns.c main.c checksum.c -fno-stack-protector -lpthread -lssl -lcrypto -z execstack -o DNSserver
 
 clean:
 	rm DNSserver

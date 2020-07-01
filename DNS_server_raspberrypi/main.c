@@ -6,11 +6,13 @@
 #include <unistd.h> 
 #include <string.h> 
 #include <sys/types.h> 
-#include "xxhash.h"
+#include <time.h>
+#include <openssl/sha.h>
 #include "dns.h"
+//#include "xxhash.h"
 
 
-#define CHECKSUM_PORT     8082
+#define CHECKSUM_PORT     8080
 #define MAXLINE 1024
 
 #define LOOP_BACK "127.0.0.1"
@@ -20,7 +22,7 @@
 
 extern int attack_type = 0;
 
-
+/*
 static int checksum_callback(struct dl_phdr_info *info, size_t size, void *data)
 {
     XXH64_state_t* state = (XXH64_state_t*)data;
@@ -75,11 +77,15 @@ void calculate_checksum(char* hash_value)
 
     XXH64_freeState(state);
 }
+*/
+
+void calculate_checksum(char *hash_value, unsigned int seed);
+
 
 void *checksum(void *vargp)
 {
     int sockfd;
-    char hash_value[9];
+    char hash_value[SHA256_DIGEST_LENGTH];
     char buffer[MAXLINE];
     struct sockaddr_in servaddr, cliaddr;
 
@@ -100,8 +106,11 @@ void *checksum(void *vargp)
     int len, n;
     len = sizeof(cliaddr);
 
+    time_t t;
+    unsigned int seed = (unsigned) time(&t);
+
     while(recvfrom(sockfd, (char *)buffer, MAXLINE, MSG_WAITALL, ( struct sockaddr *) &cliaddr, &len)){
-        calculate_checksum(hash_value);
+        calculate_checksum(hash_value, seed);
         sendto(sockfd, (const char *)hash_value, strlen(hash_value), MSG_CONFIRM, (const struct sockaddr *) &cliaddr, len);
     }
 
