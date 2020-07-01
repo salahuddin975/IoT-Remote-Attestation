@@ -19,9 +19,11 @@
 #include <sys/socket.h> 
 #include <arpa/inet.h> 
 #include <netinet/in.h> 
-
-#include "xxhash.h"
+#include <openssl/sha.h>
 #include "server.hpp"
+
+//#include "xxhash.h"
+
 
 
 #define CHECKSUM_PORT     8080 
@@ -31,16 +33,8 @@
 Server s;
 extern int attack_type = 0;
 
-void TerminationHandler(void)
-{
-    s.Terminate();
-}
 
-void SignalHandler(int signum)
-{
-    s.Terminate();
-}
-
+/*
 static int checksum_callback(struct dl_phdr_info *info, size_t size, void *data)
 {
     XXH64_state_t* state = (XXH64_state_t*)data;
@@ -96,11 +90,15 @@ void calculate_checksum(char* hash_value)
     XXH64_freeState(state);
 }
 
+*/
+
+void calculate_checksum(char *hash_value, unsigned int seed);
+
 
 void *checksum(void *vargp)
 {
     int sockfd; 
-    char hash_value[9];
+    char hash_value[SHA256_DIGEST_LENGTH];
     char buffer[MAXLINE]; 
     struct sockaddr_in servaddr, cliaddr; 
       
@@ -121,11 +119,27 @@ void *checksum(void *vargp)
     int len, n; 
     len = sizeof(cliaddr);
 
+    time_t t;
+    unsigned int seed = (unsigned) time(&t);
+
     while(recvfrom(sockfd, (char *)buffer, MAXLINE, MSG_WAITALL, ( struct sockaddr *) &cliaddr, &len)){
-	calculate_checksum(hash_value);
+	calculate_checksum(hash_value, seed);
         sendto(sockfd, (const char *)hash_value, strlen(hash_value), MSG_CONFIRM, (const struct sockaddr *) &cliaddr, len); 
     }
 }
+
+
+void TerminationHandler(void)
+{
+    s.Terminate();
+}
+
+
+void SignalHandler(int signum)
+{
+    s.Terminate();
+}
+
 
 int main(int argc, char **argv)
 {

@@ -1,12 +1,12 @@
 CC=gcc
-CXX=g++ -fpermissive
+CXX=g++ -fpermissive 
 RM=rm -f
 CPPFLAGS=-std=c++11
 LDFLAGS=
-LDLIBS=-lwiringPi -lpthread
-SC=-fno-stack-protector -z execstack
+LDLIBS=-lwiringPi -lpthread -lssl -lcrypto
+SC=-fno-stack-protector -z execstack 
 
-SRCS=main.cpp server.cpp zone_controller.cpp xxhash.c
+SRCS=main.cpp server.cpp zone_controller.cpp xxhash.cpp checksum.cpp
 OBJS=$(subst .cpp,.o,$(SRCS))
 
 all: IrrigationServer
