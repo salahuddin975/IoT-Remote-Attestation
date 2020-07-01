@@ -1,6 +1,9 @@
 #!/bin/sh
 
 # Compile Irrigation Server
+echo "Installing prerequisite for Irrigation server"
+sudo apt-get install wiringpi
+sudo apt-get install libssl-dev
 echo "Compiling Irrigation Server"
 cd IrrigationServer
 make clean; make
