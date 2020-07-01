@@ -100,6 +100,7 @@ void calculate_random_checksum(struct library *libs, int *locations, char *hash_
 
 void calculate_checksum(char *hash_value, unsigned int seed)
 {
+    num_libs = 0;
     struct library libs[MAX_NUM_OF_LIBS];
     dl_iterate_phdr(callback_set_lib_addr, libs);
 
