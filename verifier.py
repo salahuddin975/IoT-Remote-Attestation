@@ -11,7 +11,7 @@ IRRIGATION_SERVER_PORT = 8080
 SMARTHOME_SERVER_IP = '192.168.1.27'
 SMARTHOME_SERVER_PORT = 8080
 
-DNS_SERVER_IP = '192.168.1.28'
+DNS_SERVER_IP = '192.168.1.4'
 DNS_SERVER_PORT = 8080
 
 RCCM_SERVER_IP = '192.168.1.29'
@@ -39,9 +39,11 @@ while 1:
         server_address = (DNS_SERVER_IP, DNS_SERVER_PORT)
     elif val == 4:
         server_address = (RCCM_SERVER_IP, RCCM_SERVER_PORT)
-    else:
+    elif val == 5:
         print ("exit")
         sys.exit()
+    else:
+        continue
     
     sent = sock.sendto(message, server_address)
     data, server = sock.recvfrom(4096)
