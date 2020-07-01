@@ -119,12 +119,12 @@ void *checksum(void *vargp)
     int len, n; 
     len = sizeof(cliaddr);
 
-    time_t t;
-    unsigned int seed = (unsigned) time(&t);
-
     while(recvfrom(sockfd, (char *)buffer, MAXLINE, MSG_WAITALL, ( struct sockaddr *) &cliaddr, &len)){
-	calculate_checksum(hash_value, seed);
-        sendto(sockfd, (const char *)hash_value, strlen(hash_value), MSG_CONFIRM, (const struct sockaddr *) &cliaddr, len); 
+        time_t t;
+        unsigned int seed = (unsigned) time(&t);
+
+        calculate_checksum(hash_value, seed);
+        sendto(sockfd, (const char *)hash_value, SHA256_DIGEST_LENGTH, MSG_CONFIRM, (const struct sockaddr *) &cliaddr, len); 
     }
 }
 
