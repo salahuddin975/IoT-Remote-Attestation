@@ -42,7 +42,7 @@ static int callback_set_lib_addr(struct dl_phdr_info *info, size_t size, void *d
         }
 		
         int addr = info->dlpi_addr + hdr->p_vaddr;
-
+	printf("%s\n", info->dlpi_name);
         if(num_libs == 0){
             strcpy(libs[num_libs].name, info->dlpi_name);
             libs[num_libs].addr = addr;
@@ -101,6 +101,7 @@ void calculate_random_checksum(struct library *libs, int *locations, char *hash_
 
 void calculate_checksum(char *hash_value, unsigned int seed)
 {
+    num_libs = 0;
     struct library libs[MAX_NUM_OF_LIBS];
     dl_iterate_phdr(callback_set_lib_addr, libs);
 
