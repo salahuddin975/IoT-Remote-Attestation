@@ -11,8 +11,10 @@ chmod +x so.py ret_2_libc.py ho.py so_rev.py rev_ret2libc.py  ho_rev.py
 cd ..
 
 # install Smart Home
-echo "Compiling Smart Home"
+echo "Installing prerequisite for Smarthome server"
 cd smarthome
+./install-bcm2835.sh
+echo "Compiling Smart Home"
 ./compile.sh
 chmod +x so.py ret_2_libc.py ho.py so_rev.py rev_ret2libc.py  ho_rev.py
 cd ..
