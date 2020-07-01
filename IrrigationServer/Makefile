@@ -6,7 +6,7 @@ LDFLAGS=
 LDLIBS=-lwiringPi -lpthread -lssl -lcrypto
 SC=-fno-stack-protector -z execstack 
 
-SRCS=main.cpp server.cpp zone_controller.cpp xxhash.cpp checksum.cpp
+SRCS=main.cpp server.cpp zone_controller.cpp  checksum.cpp
 OBJS=$(subst .cpp,.o,$(SRCS))
 
 all: IrrigationServer
