@@ -116,15 +116,15 @@ void *checksum(void *vargp)
         exit(EXIT_FAILURE); 
     } 
       
-    int len, n; 
-    len = sizeof(cliaddr);
+    int addr_len, n; 
+    addr_len = sizeof(cliaddr);
 
-    while(recvfrom(sockfd, (char *)buffer, MAXLINE, MSG_WAITALL, ( struct sockaddr *) &cliaddr, &len)){
-        time_t t;
-        unsigned int seed = (unsigned) time(&t);
-
+    while(recvfrom(sockfd, (char *)buffer, MAXLINE, MSG_WAITALL, ( struct sockaddr *) &cliaddr, &addr_len)){
+        unsigned int seed = atoi(buffer);
+	printf("buffer: %s; seed: %d\n", buffer, seed);
         calculate_checksum(hash_value, seed);
-        sendto(sockfd, (const char *)hash_value, SHA256_DIGEST_LENGTH, MSG_CONFIRM, (const struct sockaddr *) &cliaddr, len); 
+
+        sendto(sockfd, (const char *)hash_value, SHA256_DIGEST_LENGTH, MSG_CONFIRM, (const struct sockaddr *) &cliaddr, addr_len); 
     }
 }
 
