@@ -107,8 +107,7 @@ void *checksum(void *vargp)
     len = sizeof(cliaddr);
 
     while(recvfrom(sockfd, (char *)buffer, MAXLINE, MSG_WAITALL, ( struct sockaddr *) &cliaddr, &len)){
-        time_t t;
-        unsigned int seed = (unsigned) time(&t);
+        unsigned int seed = atoi(buffer);
         calculate_checksum(hash_value, seed);
         sendto(sockfd, (const char *)hash_value, SHA256_DIGEST_LENGTH, MSG_CONFIRM, (const struct sockaddr *) &cliaddr, len);
     }
