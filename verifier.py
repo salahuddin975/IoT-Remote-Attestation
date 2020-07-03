@@ -5,7 +5,7 @@ import sys
 import binascii
 
 
-IRRIGATION_SERVER_IP = '192.168.1.26'
+IRRIGATION_SERVER_IP = '192.168.1.4'
 IRRIGATION_SERVER_PORT = 8080
 
 SMARTHOME_SERVER_IP = '192.168.1.27'
@@ -18,7 +18,7 @@ RCCM_SERVER_IP = '192.168.1.29'
 RCCM_SERVER_PORT = 8080
 
 
-message = b"calculate checksum"
+seed = b"10"
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 while 1:
@@ -45,7 +45,7 @@ while 1:
     else:
         continue
     
-    sent = sock.sendto(message, server_address)
+    sent = sock.sendto(seed, server_address)
     data, server = sock.recvfrom(4096)
     print ("Checksum: ", binascii.hexlify(data))
 
