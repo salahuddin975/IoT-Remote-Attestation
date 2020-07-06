@@ -15,8 +15,6 @@ Attack()
 		echo "	Select new server --> 9"
 
 
-		echo $2
-
        		read input
         	case $input in
                 	1) 
