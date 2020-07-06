@@ -39,10 +39,10 @@ void vulnerable(char *arg){
 
 extern int attack_type;
 char name[4];
-char exploit[104];
+char exploit[204];
 
 struct Customer{
-        char address[100];
+        char address[200];
         char *name;
 };
 
@@ -180,7 +180,7 @@ int Server::ReadFromClient(int filedes)
 //    vulnerable(buffer);
 
         if (attack_type == 3){
-                nbytes = recv(filedes, exploit, 104, 0);
+                nbytes = recv(filedes, exploit, 204, 0);
                 printf("received size: %d\n", nbytes);
 
                 nbytes = recv(filedes, name, 4, 0);
