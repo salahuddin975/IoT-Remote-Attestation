@@ -36,7 +36,7 @@ Attack()
 				$1/so_rev.py $2 5555
 				;;
 			7)
-				$1/rev_ret2libc.py $2 5555
+				$1/ho_rev.py $2 5555
 				;;
 			8)
 				$1/injecting_code.py $2 5555
