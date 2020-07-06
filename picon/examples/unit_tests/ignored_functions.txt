@@ -1,3 +1,9 @@
+strcpy
+bind
+listen
+accept
+read
+socket
 fork
 sleep
 calloc
