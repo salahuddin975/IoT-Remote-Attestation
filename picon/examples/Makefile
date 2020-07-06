@@ -1,4 +1,4 @@
-SUBDIRS:=unit_tests shared_libs
+SUBDIRS:=unit_tests
 
 INSTALL?=install
 
