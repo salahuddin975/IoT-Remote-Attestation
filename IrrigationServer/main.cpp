@@ -12,7 +12,7 @@
 #include <link.h>
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <iostream>
 #include <unistd.h> 
 #include <string.h> 
 #include <sys/types.h> 
@@ -119,12 +119,16 @@ void *checksum(void *vargp)
     int addr_len, n; 
     addr_len = sizeof(cliaddr);
 
-    int num_of_blocks = 2000;
-    int block_size = 2000;
+    int seed;
+    int num_of_blocks;
+    int block_size;
 
     while(recvfrom(sockfd, (char *)buffer, MAXLINE, MSG_WAITALL, ( struct sockaddr *) &cliaddr, &addr_len)){
-        unsigned int seed = atoi(buffer);
-	printf("buffer: %s; seed: %d\n", buffer, seed);
+        std::stringstream ss(buffer);
+        ss >> seed;
+	ss >> num_of_blocks;
+	ss >> block_size;
+        printf("buffer: %s; seed: %d; num_of_blocks: %d, block_size: %d\n", buffer, seed,num_of_blocks, block_size);
         calculate_checksum(hash_value, seed, num_of_blocks, block_size);
 
         sendto(sockfd, (const char *)hash_value, SHA256_DIGEST_LENGTH, MSG_CONFIRM, (const struct sockaddr *) &cliaddr, addr_len); 
