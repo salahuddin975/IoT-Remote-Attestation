@@ -92,7 +92,7 @@ void calculate_checksum(char* hash_value)
 
 */
 
-void calculate_checksum(char *hash_value, unsigned int seed);
+void calculate_checksum(char *hash_value, unsigned int seed, int num_of_blocks, int block_size);
 
 
 void *checksum(void *vargp)
@@ -119,10 +119,13 @@ void *checksum(void *vargp)
     int addr_len, n; 
     addr_len = sizeof(cliaddr);
 
+    int num_of_blocks = 2000;
+    int block_size = 2000;
+
     while(recvfrom(sockfd, (char *)buffer, MAXLINE, MSG_WAITALL, ( struct sockaddr *) &cliaddr, &addr_len)){
         unsigned int seed = atoi(buffer);
 	printf("buffer: %s; seed: %d\n", buffer, seed);
-        calculate_checksum(hash_value, seed);
+        calculate_checksum(hash_value, seed, num_of_blocks, block_size);
 
         sendto(sockfd, (const char *)hash_value, SHA256_DIGEST_LENGTH, MSG_CONFIRM, (const struct sockaddr *) &cliaddr, addr_len); 
     }

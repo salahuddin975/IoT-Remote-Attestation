@@ -7,9 +7,6 @@
 #include <openssl/sha.h>
 
 
-#define NUM_OF_BLOCKS 50
-#define BLOCK_SIZE 2000
-
 #define MAX_PATH_LEN 4096          // lINUX: 4096, windows: 260
 #define MAX_NUM_OF_LIBS 200
 
@@ -67,12 +64,12 @@ static int callback_set_lib_addr(struct dl_phdr_info *info, size_t size, void *d
 }
 
 
-void calculate_random_checksum(struct library *libs, int *locations, char *hash_value)
+void calculate_random_checksum(struct library *libs, int *locations, char *hash_value, int num_of_blocks, int block_size)
 {
     SHA256_CTX sha256;
     SHA256_Init(&sha256);
 
-    for(int i=0; i<NUM_OF_BLOCKS; i++){
+    for(int i=0; i<num_of_blocks; i++){
     	int location = locations[i];
 
 	for (int j=0; j<num_libs; j++){
@@ -81,15 +78,15 @@ void calculate_random_checksum(struct library *libs, int *locations, char *hash_
                 continue;
             }
 			
-            if((location + BLOCK_SIZE) < libs[j].size) {           // if the block size fit in the library
+            if((location + block_size) < libs[j].size) {           // if the block size fit in the library
                 //printf("value: %d, libs: %d: %s\n", locations[i], j, libs[j].name);
-                SHA256_Update(&sha256, libs[j].addr + location, BLOCK_SIZE);
+                SHA256_Update(&sha256, libs[j].addr + location, block_size);
                 break;
             }
             else{            // if doesn't fit the block size
                 //printf("Else, value: %d, libs: %d: %s\n", locations[i], j, libs[j].name);
-                int frac = location + BLOCK_SIZE - libs[j].size;
-                SHA256_Update(&sha256, libs[j].addr + location, BLOCK_SIZE - frac);
+                int frac = location + block_size - libs[j].size;
+                SHA256_Update(&sha256, libs[j].addr + location, block_size - frac);
                 SHA256_Update(&sha256, libs[j+1].addr, frac);
                 break;
             }
@@ -99,7 +96,7 @@ void calculate_random_checksum(struct library *libs, int *locations, char *hash_
 }
 
 
-void calculate_checksum(char *hash_value, unsigned int seed)
+void calculate_checksum(char *hash_value, unsigned int seed, int num_of_blocks, int block_size)
 {
     num_libs = 0;
     struct library libs[MAX_NUM_OF_LIBS];
@@ -113,15 +110,15 @@ void calculate_checksum(char *hash_value, unsigned int seed)
 
     printf("total size: %d \n", total_sz);
 
-    int random_locations[NUM_OF_BLOCKS];
+    int *random_locations = malloc(num_of_blocks * sizeof(int));;
     srand(seed);
 
-    for (int i=0; i<NUM_OF_BLOCKS; i++){
-	random_locations[i] = rand() % (total_sz - BLOCK_SIZE);
-	printf("%d ", random_locations[i]);
+    for (int i=0; i<num_of_blocks; i++){
+	random_locations[i] = rand() % (total_sz - block_size);
+	//printf("%d ", random_locations[i]);
     }
     
-    calculate_random_checksum(libs, random_locations, hash_value);
+    calculate_random_checksum(libs, random_locations, hash_value, num_of_blocks, block_size);
  
     printf("\nSHA-256 using random access segment: \n");
     for (int i = 0; i < SHA256_DIGEST_LENGTH; i++) {
@@ -135,16 +132,19 @@ void calculate_checksum(char *hash_value, unsigned int seed)
 /*
 int main()
 {
+    int num_of_blocks = 200;
+    int block_size = 2000;
+
     unsigned char hash_value[SHA256_DIGEST_LENGTH];
 	
     time_t t;
     unsigned int seed = (unsigned) time(&t);
     
-    calculate_checksum(hash_value, seed);
+    calculate_checksum(hash_value, seed, num_of_blocks, block_size);
 
 }
 
 */
 
-// gcc checksum_random.c -o checksum -fpermissive -lssl -lcrypto
+// g++ checksum.cpp -o checksum -fpermissive -lssl -lcrypto
 
