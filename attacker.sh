@@ -21,7 +21,7 @@ Attack()
                         	$1/so.py $2 5555
                        		;;
                		2) 
-                       		$1/ret_2_libc.py $2 5555
+                       		$1/ret2libc.py $2 5555
                        		;;
                		3) 
                        		$1/ho.py $2 5555
