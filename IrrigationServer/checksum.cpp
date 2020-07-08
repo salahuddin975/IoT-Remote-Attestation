@@ -104,7 +104,7 @@ void calculate_checksum(char *hash_value, unsigned int seed, int num_of_blocks, 
 
     int total_sz = 0;
     for(int i = 0; i<num_libs; i++){
-	printf("name: %s; addr=%10p; size=%d\n", libs[i].name, libs[i].addr, libs[i].size);
+	//printf("name: %s; addr=%10p; size=%d\n", libs[i].name, libs[i].addr, libs[i].size);
     	total_sz += libs[i].size;
     }  
 
