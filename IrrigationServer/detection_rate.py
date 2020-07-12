@@ -56,20 +56,23 @@ if __name__ == "__main__":
     total_memory_size = 5913304
 
     num_of_blocks = 0
-    num_of_seeds = 100
+    num_of_iteration = 150
+    increment_size = 100
+
+    num_of_seeds = 1000
 
 
-    fields = ['num_of_blocks', 'block_size', 'covered_memory_proportion', 'num_of_dection(out_of_100)']
+    fields = ['num_of_blocks', 'block_size', 'covered_memory_proportion', 'dection_rate']
     filename = "detection_rate.csv"
 
     with open(filename, 'w') as csvfile: 
         csvwriter = csv.writer(csvfile)
         csvwriter.writerow(fields)
 
-        for n in range(150):
-            num_of_blocks = num_of_blocks + 100
+        for n in range(num_of_iteration):
+            num_of_blocks = num_of_blocks + increment_size
             num_of_detection = 0
-            for i in range(100):
+            for i in range(num_of_seeds):
                 seed = int(time.time()) + i
                 msg = str(seed) + " " + str(num_of_blocks) + " " + str(block_size) + " "
                 msg = bytes(msg, 'ascii')
@@ -78,8 +81,8 @@ if __name__ == "__main__":
                     num_of_detection = num_of_detection + 1
         
             covered_memory = round(((num_of_blocks * block_size * 100)/total_memory_size), 3)
-            csvwriter.writerow([num_of_blocks, block_size, covered_memory, num_of_detection])
-            print ("num_of_block: ", num_of_blocks, "; block_size: ", block_size, "; covered_memory: ", covered_memory, "%; num_of_detection: ", num_of_detection)
+            csvwriter.writerow([num_of_blocks, block_size, covered_memory, (num_of_detection*100/num_of_seeds)])
+            print ("num_of_block: ", num_of_blocks, "; block_size: ", block_size, "; covered_memory: ", covered_memory, "%; num_of_detection: ", num_of_detection, "(out of ",num_of_seeds,")")
             time.sleep(1)        
 
 sock.close()

@@ -18,7 +18,14 @@ RCCM_SERVER_IP = '192.168.1.29'
 RCCM_SERVER_PORT = 8080
 
 
-seed = b"10"
+seed = "10"
+num_of_blocks = "2000"
+block_size = "2000"
+
+msg = seed + " " + num_of_blocks + " " + block_size
+msg = bytes(msg, 'ascii')
+
+
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 while 1:
@@ -45,7 +52,7 @@ while 1:
     else:
         continue
     
-    sent = sock.sendto(seed, server_address)
+    sent = sock.sendto(msg, server_address)
     data, server = sock.recvfrom(4096)
     print ("Checksum: ", binascii.hexlify(data))
 
