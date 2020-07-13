@@ -22,7 +22,7 @@ seed = "10"
 num_of_blocks = "2000"
 block_size = "2000"
 
-msg = seed + " " + num_of_blocks + " " + block_size
+msg = seed + " " + num_of_blocks + " " + block_size + " "
 msg = bytes(msg, 'ascii')
 
 
