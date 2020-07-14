@@ -64,13 +64,14 @@ static int callback_set_lib_addr(struct dl_phdr_info *info, size_t size, void *d
 }
 
 
-void calculate_random_checksum(struct library *libs, int *locations, char *hash_value, int num_of_blocks, int block_size)
+void calculate_random_checksum(struct library *libs, int *blocks_pos, char *hash_value, int num_of_blocks, int block_size)
 {
     SHA256_CTX sha256;
     SHA256_Init(&sha256);
 
     for(int i=0; i<num_of_blocks; i++){
-    	int location = locations[i];
+    	int block_pos = blocks_pos[i];
+	int location = block_pos * block_size;
 
 	for (int j=0; j<num_libs; j++){
             if(location > libs[j].size){             // Find the library
@@ -107,25 +108,30 @@ void calculate_checksum(char *hash_value, unsigned int seed, int num_of_blocks, 
 	//printf("name: %s; addr=%10p; size=%d\n", libs[i].name, libs[i].addr, libs[i].size);
     	total_sz += libs[i].size;
     }  
-
     printf("total size: %d \n", total_sz);
 
-    int *random_locations = malloc(num_of_blocks * sizeof(int));;
+    int max_possible_blocks = total_sz/block_size;
+    if (num_of_blocks > max_possible_blocks){
+    	num_of_blocks = max_possible_blocks;
+    }
+
+    int *blocks_pos = malloc(num_of_blocks * sizeof(int));;
     srand(seed);
 
     for (int i=0; i<num_of_blocks; i++){
-	random_locations[i] = rand() % (total_sz - block_size);
+	blocks_pos[i] = rand() % num_of_blocks;
 	//printf("%d ", random_locations[i]);
     }
     
-    calculate_random_checksum(libs, random_locations, hash_value, num_of_blocks, block_size);
+    calculate_random_checksum(libs, blocks_pos, hash_value, num_of_blocks, block_size);
  
     printf("\nSHA-256 using random access segment: \n");
     for (int i = 0; i < SHA256_DIGEST_LENGTH; i++) {
         printf("%02x", hash_value[i]);
     }
-	
     putchar('\n');
+
+    free(blocks_pos);
 }
 
 
