@@ -113,19 +113,20 @@ void calculate_checksum(char *hash_value, unsigned int seed, int num_of_blocks, 
     int max_possible_blocks = total_sz/block_size;
     if (num_of_blocks > max_possible_blocks){
     	num_of_blocks = max_possible_blocks;
+	printf("set max possible blocks: %d\n", num_of_blocks);
     }
 
     int *blocks_pos = malloc(num_of_blocks * sizeof(int));;
     srand(seed);
 
     for (int i=0; i<num_of_blocks; i++){
-	blocks_pos[i] = rand() % num_of_blocks;
-	//printf("%d ", random_locations[i]);
+	blocks_pos[i] = rand() % max_possible_blocks;
+	//printf("%d ", blocks_pos[i]);
     }
     
     calculate_random_checksum(libs, blocks_pos, hash_value, num_of_blocks, block_size);
  
-    printf("\nSHA-256 using random access segment: \n");
+    printf("\nSHA-256 using psuedo-random memory checksum: \n");
     for (int i = 0; i < SHA256_DIGEST_LENGTH; i++) {
         printf("%02x", hash_value[i]);
     }
