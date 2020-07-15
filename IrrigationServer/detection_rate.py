@@ -59,7 +59,7 @@ if __name__ == "__main__":
     total_memory_size = 5913304
 
     num_of_blocks = 0
-    num_of_iteration = int(total_memory_size / block_size) + 5
+    num_of_iteration = int(total_memory_size / block_size) + 1
     increment_size = 300
 
     num_of_seeds = 500
