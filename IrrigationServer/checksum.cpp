@@ -5,7 +5,7 @@
 #include <string.h>
 #include <ctime>
 #include <openssl/sha.h>
-
+#include <vector>
 
 #define MAX_PATH_LEN 4096          // lINUX: 4096, windows: 260
 #define MAX_NUM_OF_LIBS 200
@@ -116,11 +116,18 @@ void calculate_checksum(char *hash_value, unsigned int seed, int num_of_blocks, 
 	printf("set max possible blocks: %d\n", num_of_blocks);
     }
 
+    std::vector<int> rnd;
+    for(int i = 0; i< max_possible_blocks;  i++){
+	rnd.push_back(i);    
+    }
+
     int *blocks_pos = malloc(num_of_blocks * sizeof(int));;
     srand(seed);
-
-    for (int i=0; i<num_of_blocks; i++){
-	blocks_pos[i] = rand() % max_possible_blocks;
+    
+    for (int i=0; i<num_of_blocks - 5; i++){
+	int loc = rand() % (max_possible_blocks - i);
+	blocks_pos[i] = rnd.at(loc); 
+	rnd.erase(rnd.begin() + loc);
 	//printf("%d ", blocks_pos[i]);
     }
     
