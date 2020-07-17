@@ -60,7 +60,7 @@ if __name__ == "__main__":
 
     num_of_blocks = 0
     num_of_iteration = int(total_memory_size / block_size) + 1
-    increment_size = 300
+    increment_size = 200
 
     num_of_seeds = 500
 
@@ -86,10 +86,15 @@ if __name__ == "__main__":
                     num_of_detection = num_of_detection + 1
         
             end_time = time.time()
-            spend_time = round((end_time - start_time), 3)
-            avg_spend_time = round((spend_time/num_of_seeds), 4)
-            covered_memory = round(((num_of_blocks * block_size * 100)/total_memory_size), 3)
-            detection_rate = round((num_of_detection * 100)/num_of_seeds, 3)
+            #spend_time = round((end_time - start_time), 3)
+            #avg_spend_time = round((spend_time/num_of_seeds), 4)
+            #covered_memory = round(((num_of_blocks * block_size * 100)/total_memory_size), 3)
+            #detection_rate = round((num_of_detection * 100)/num_of_seeds, 3)
+
+            spend_time = end_time - start_time
+            avg_spend_time = spend_time/num_of_seeds
+            covered_memory = (num_of_blocks * block_size * 100)/total_memory_size
+            detection_rate = (num_of_detection * 100)/num_of_seeds
 
             csvwriter.writerow([num_of_blocks, block_size, covered_memory, detection_rate, spend_time, avg_spend_time])
             print ("num_of_block: ", num_of_blocks, "; block_size: ", block_size, "; covered_memory: ", covered_memory, "%; detection_rate: ", detection_rate, "; spend_time: ", spend_time, "; avg_spend_time: ",  avg_spend_time)
