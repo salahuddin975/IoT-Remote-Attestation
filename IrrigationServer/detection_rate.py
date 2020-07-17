@@ -65,8 +65,8 @@ if __name__ == "__main__":
     num_of_seeds = 500
 
 
-    fields = ['num_of_blocks', 'block_size', 'covered_memory_proportion', 'dection_rate', 'spend_time', 'avg_spend_time']
-    filename = "detection_rate.csv"
+    fields = ['num_of_blocks', 'block_size', 'covered_memory_size', 'detection_rate', 'spend_time', 'avg_spend_time']
+    filename = "detection_rate_no_overlap.csv"
 
     with open(filename, 'w') as csvfile: 
         csvwriter = csv.writer(csvfile)
