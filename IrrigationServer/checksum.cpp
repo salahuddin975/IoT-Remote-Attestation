@@ -116,18 +116,19 @@ void calculate_checksum(char *hash_value, unsigned int seed, int num_of_blocks, 
 	printf("set max possible blocks: %d\n", num_of_blocks);
     }
 
-    std::vector<int> rnd;
+    int *blocks_pos = malloc(num_of_blocks * sizeof(int));;
+    int *rnd = malloc(num_of_blocks * sizeof(int));;
+
     for(int i = 0; i< max_possible_blocks;  i++){
-	rnd.push_back(i);    
+	rnd[i]= i;    
     }
 
-    int *blocks_pos = malloc(num_of_blocks * sizeof(int));;
     srand(seed);
     
-    for (int i=0; i<num_of_blocks - 5; i++){
+    for (int i=0; i<num_of_blocks; i++){
 	int loc = rand() % (max_possible_blocks - i);
-	blocks_pos[i] = rnd.at(loc); 
-	rnd.erase(rnd.begin() + loc);
+	blocks_pos[i] = rnd[loc]; 
+	rnd[loc] = rnd[max_possible_blocks - i - 1];
 	//printf("%d ", blocks_pos[i]);
     }
     
@@ -139,6 +140,7 @@ void calculate_checksum(char *hash_value, unsigned int seed, int num_of_blocks, 
     }
     putchar('\n');
 
+    free(rnd);
     free(blocks_pos);
 }
 
