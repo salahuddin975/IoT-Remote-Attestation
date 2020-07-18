@@ -17,11 +17,11 @@ VERIFIER_PORT = 8080
 
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-sock.settimeout(2)
+sock.settimeout(1)
 server_address = (SERVER_IP, SERVER_PORT)
 
 verifier_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-verifier_sock.settimeout(2)
+verifier_sock.settimeout(1)
 verifier_address = (VERIFIER_IP, VERIFIER_PORT)
  
 
