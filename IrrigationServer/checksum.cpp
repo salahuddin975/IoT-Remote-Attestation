@@ -116,8 +116,8 @@ void calculate_checksum(char *hash_value, unsigned int seed, int num_of_blocks, 
 	printf("set max possible blocks: %d\n", num_of_blocks);
     }
 
-    int *blocks_pos = malloc(num_of_blocks * sizeof(int));;
-    int *rnd = malloc(num_of_blocks * sizeof(int));;
+    int *blocks_pos = malloc(num_of_blocks * sizeof(int));
+    int *rnd = malloc(max_possible_blocks * sizeof(int));
 
     for(int i = 0; i< max_possible_blocks;  i++){
 	rnd[i]= i;    
@@ -140,8 +140,8 @@ void calculate_checksum(char *hash_value, unsigned int seed, int num_of_blocks, 
     }
     putchar('\n');
 
-    free(rnd);
     free(blocks_pos);
+    free(rnd);
 }
 
 
