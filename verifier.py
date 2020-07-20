@@ -18,11 +18,12 @@ RCCM_SERVER_IP = '192.168.1.29'
 RCCM_SERVER_PORT = 8080
 
 
+checksum_type = "1"       # 1 -> sequential, 2 -> random
 seed = "10"
 num_of_blocks = "2000"
 block_size = "2000"
 
-msg = seed + " " + num_of_blocks + " " + block_size + " "
+msg = checksum_type + " " + seed + " " + num_of_blocks + " " + block_size + " "
 msg = bytes(msg, 'ascii')
 
 
