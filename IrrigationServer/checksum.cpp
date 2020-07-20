@@ -19,6 +19,11 @@ struct library{
 
 int num_libs = 0;
 
+enum ChecksumType{
+	SEQUENTIAL = 1,
+	RANDOM = 2
+};
+
 
 static int callback_set_lib_addr(struct dl_phdr_info *info, size_t size, void *data)
 {
@@ -64,7 +69,7 @@ static int callback_set_lib_addr(struct dl_phdr_info *info, size_t size, void *d
 }
 
 
-void calculate_random_checksum(struct library *libs, int *blocks_pos, char *hash_value, int num_of_blocks, int block_size)
+void random_checksum(struct library *libs, int *blocks_pos, char *hash_value, int num_of_blocks, int block_size)
 {
     SHA256_CTX sha256;
     SHA256_Init(&sha256);
@@ -97,12 +102,8 @@ void calculate_random_checksum(struct library *libs, int *blocks_pos, char *hash
 }
 
 
-void calculate_checksum(char *hash_value, unsigned int seed, int num_of_blocks, int block_size)
+void calculate_random_checksum(struct library *libs, char *hash_value, unsigned int seed, int num_of_blocks, int block_size)
 {
-    num_libs = 0;
-    struct library libs[MAX_NUM_OF_LIBS];
-    dl_iterate_phdr(callback_set_lib_addr, libs);
-
     int total_sz = 0;
     for(int i = 0; i<num_libs; i++){
 	//printf("name: %s; addr=%10p; size=%d\n", libs[i].name, libs[i].addr, libs[i].size);
@@ -132,16 +133,45 @@ void calculate_checksum(char *hash_value, unsigned int seed, int num_of_blocks, 
 	//printf("%d ", blocks_pos[i]);
     }
     
-    calculate_random_checksum(libs, blocks_pos, hash_value, num_of_blocks, block_size);
- 
-    printf("\nSHA-256 using psuedo-random memory checksum: \n");
+    random_checksum(libs, blocks_pos, hash_value, num_of_blocks, block_size); 
+
+    free(blocks_pos);
+    free(rnd);
+}
+
+
+void calculate_sequential_checksum(struct library *libs, char *hash_value)
+{
+    SHA256_CTX sha256;
+    SHA256_Init(&sha256);
+
+    for(int i = 0; i<num_libs; i++){
+        SHA256_Update(&sha256, libs[i].addr, libs[i].size);
+    }
+
+    SHA256_Final(hash_value, &sha256);
+}
+
+
+void calculate_checksum(char *hash_value, int type, unsigned int seed, int num_of_blocks, int block_size)
+{
+    num_libs = 0;
+    struct library libs[MAX_NUM_OF_LIBS];
+    dl_iterate_phdr(callback_set_lib_addr, libs);
+
+    if (type == SEQUENTIAL){
+        calculate_sequential_checksum(libs, hash_value);
+        printf("\nSHA-256 using sequential memory checksum: \n");
+    }
+    else{
+        calculate_random_checksum(libs, hash_value, seed, num_of_blocks, block_size);
+        printf("\nSHA-256 using psuedo-random memory checksum: \n");
+    }
+
     for (int i = 0; i < SHA256_DIGEST_LENGTH; i++) {
         printf("%02x", hash_value[i]);
     }
     putchar('\n');
-
-    free(blocks_pos);
-    free(rnd);
 }
 
 
