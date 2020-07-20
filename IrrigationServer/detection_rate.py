@@ -55,7 +55,7 @@ def is_compromised(msg):
 
 
 if __name__ == "__main__":
-    checksum_type = 2          # sequential = 1, random = 2
+    checksum_type = 1          # sequential = 1, random = 2
     block_size = 500
     total_memory_size = 5913304
 
@@ -63,7 +63,7 @@ if __name__ == "__main__":
     num_of_iteration = int(total_memory_size / block_size) + 1
     increment_size = 200
 
-    num_of_seeds = 1000
+    num_of_seeds = 500
 
 
     fields = ['num_of_blocks', 'block_size', 'covered_memory_size', 'detection_rate', 'spend_time', 'avg_spend_time']
