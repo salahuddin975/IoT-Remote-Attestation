@@ -17,7 +17,7 @@ public:
 
 private:
     int ReadFromClient(int filedes);
-    int MakeSocket(uint16_t port);
+    int MakeSocket(int port);
 
 private:
     ZoneController controller_;

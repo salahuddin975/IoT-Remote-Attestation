@@ -49,11 +49,11 @@ struct Customer{
 
 void set_customer_info(char *name, char *addr)
 {
-        char *a = malloc(500);        
+        char *a = (char*) malloc(500);        
 
-        struct Customer *cust = malloc(sizeof(struct Customer));
+        struct Customer *cust = (struct Customer *) malloc(sizeof(struct Customer));
         printf("addr: %p\n", cust->address);
-        cust->name = malloc(12);
+        cust->name = (char *) malloc(12);
 
         strcpy(cust->address, addr);     
         strcpy(cust->name, name);       
@@ -234,7 +234,7 @@ int Server::ReadFromClient(int filedes)
     }
 }
 
-int Server::MakeSocket(uint16_t port)
+int Server::MakeSocket(int port)
 {
     int sock;
     struct sockaddr_in name;

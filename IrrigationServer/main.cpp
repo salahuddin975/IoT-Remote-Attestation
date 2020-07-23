@@ -56,7 +56,7 @@ void *checksum(void *vargp)
         exit(EXIT_FAILURE); 
     } 
       
-    int addr_len, n; 
+    unsigned int addr_len, n; 
     addr_len = sizeof(cliaddr);
 
     int type;
