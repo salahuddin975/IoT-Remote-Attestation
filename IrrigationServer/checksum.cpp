@@ -86,19 +86,19 @@ void random_checksum(struct library *libs, int *blocks_pos, char *hash_value, in
 			
             if((location + block_size) < libs[j].size) {           // if the block size fit in the library
                 //printf("value: %d, libs: %d: %s\n", locations[i], j, libs[j].name);
-                SHA256_Update(&sha256, libs[j].addr + location, block_size);
+                SHA256_Update(&sha256, (const void *) (libs[j].addr + location), block_size);
                 break;
             }
             else{            // if doesn't fit the block size
                 //printf("Else, value: %d, libs: %d: %s\n", locations[i], j, libs[j].name);
                 int frac = location + block_size - libs[j].size;
-                SHA256_Update(&sha256, libs[j].addr + location, block_size - frac);
-                SHA256_Update(&sha256, libs[j+1].addr, frac);
+                SHA256_Update(&sha256, (const void*) (libs[j].addr + location), block_size - frac);
+                SHA256_Update(&sha256, (const void*)libs[j+1].addr, frac);
                 break;
             }
         }
     }
-    SHA256_Final(hash_value, &sha256);
+    SHA256_Final((unsigned char*) hash_value, &sha256);
 }
 
 
@@ -117,8 +117,8 @@ void calculate_random_checksum(struct library *libs, char *hash_value, unsigned 
 	printf("set max possible blocks: %d\n", num_of_blocks);
     }
 
-    int *blocks_pos = malloc(num_of_blocks * sizeof(int));
-    int *rnd = malloc(max_possible_blocks * sizeof(int));
+    int *blocks_pos = (int *) malloc(num_of_blocks * sizeof(int));
+    int *rnd = (int *) malloc(max_possible_blocks * sizeof(int));
 
     for(int i = 0; i< max_possible_blocks;  i++){
 	rnd[i]= i;    
@@ -146,10 +146,10 @@ void calculate_sequential_checksum(struct library *libs, char *hash_value)
     SHA256_Init(&sha256);
 
     for(int i = 0; i<num_libs; i++){
-        SHA256_Update(&sha256, libs[i].addr, libs[i].size);
+        SHA256_Update(&sha256, (const void*) libs[i].addr, libs[i].size);
     }
 
-    SHA256_Final(hash_value, &sha256);
+    SHA256_Final((unsigned char *)hash_value, &sha256);
 }
 
 
