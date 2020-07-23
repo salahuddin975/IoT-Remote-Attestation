@@ -1,6 +1,6 @@
 CXX=clang++ -fpermissive
 RM=rm -f
-CPPFLAGS= -std=c++11 -stdlib=libstdc++
+CPPFLAGS= -std=c++11 -stdlib=libstdc++  # -I/usr/include/c++/8 -I/usr/include/arm-linux-gnueabihf/c++/8/ -L /usr/lib/gcc/arm-linux-gnueabihf/8/
 LDLIBS=-lwiringPi -lpthread -lssl -lcrypto
 SC=-fno-stack-protector -z execstack 
 
