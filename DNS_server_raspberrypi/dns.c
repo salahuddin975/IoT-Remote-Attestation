@@ -228,7 +228,7 @@ int recv_query(){
 	sockfd = socket(AF_INET, SOCK_DGRAM, 0);
 	if(sockfd < 0){
 		printf("error1 \n");
-		return;
+		return -1;
 	}
 
 	bzero((char *) &serveraddr, sizeof(serveraddr));
@@ -241,7 +241,7 @@ int recv_query(){
 
 	if(n < 0){
 		printf("error2\n");
-		return;
+		return -1;
 	}
 
 	printf("ready!\n");
@@ -270,7 +270,7 @@ int recv_query(){
 
 		if(n < 0){
 			printf("error3\n");
-			return;
+			return -1;
 		}
 
 		//count++;
