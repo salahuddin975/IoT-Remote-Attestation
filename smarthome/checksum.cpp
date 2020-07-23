@@ -83,19 +83,19 @@ void calculate_random_checksum(struct library *libs, int *locations, char *hash_
 			
             if((location + BLOCK_SIZE) < libs[j].size) {           // if the block size fit in the library
                 //printf("value: %d, libs: %d: %s\n", locations[i], j, libs[j].name);
-                SHA256_Update(&sha256, libs[j].addr + location, BLOCK_SIZE);
+                SHA256_Update(&sha256, (const void *) (libs[j].addr + location), BLOCK_SIZE);
                 break;
             }
             else{            // if doesn't fit the block size
                 //printf("Else, value: %d, libs: %d: %s\n", locations[i], j, libs[j].name);
                 int frac = location + BLOCK_SIZE - libs[j].size;
-                SHA256_Update(&sha256, libs[j].addr + location, BLOCK_SIZE - frac);
-                SHA256_Update(&sha256, libs[j+1].addr, frac);
+                SHA256_Update(&sha256, (const void *) (libs[j].addr + location), BLOCK_SIZE - frac);
+                SHA256_Update(&sha256, (const void *) libs[j+1].addr, frac);
                 break;
             }
         }
     }
-    SHA256_Final(hash_value, &sha256);
+    SHA256_Final((unsigned char*)hash_value, &sha256);
 }
 
 

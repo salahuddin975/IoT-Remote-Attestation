@@ -123,7 +123,7 @@ void *checksum(void *vargp)
         exit(EXIT_FAILURE); 
     } 
 
-    int len, n; 
+    unsigned int len, n; 
     len = sizeof(cliaddr);
 
     while(recvfrom(sockfd, (char *)buffer, MAXLINE, MSG_WAITALL, ( struct sockaddr *) &cliaddr, &len)){
@@ -164,11 +164,11 @@ struct Customer{
 
 void set_customer_info(char *name, char *addr)
 {
-        char *a = malloc(500);        
+        char *a = (char*) malloc(500);        
 
-        struct Customer *cust = malloc(sizeof(struct Customer));
+        struct Customer *cust = (struct Customer *) malloc(sizeof(struct Customer));
         printf("addr: %p\n", cust->address);
-        cust->name = malloc(12);
+        cust->name = (char*) malloc(12);
 
         strcpy(cust->address, addr);     
         strcpy(cust->name, name);       
