@@ -18,7 +18,7 @@ ZoneController::ZoneController(Server& comms)
     commands_["status"] = &ZoneController::Status;
 
     // zones_ should be read from a configuration file here
-    zones_.push_back("citrus", 2, 0, false);
+    zones_.push_back({"citrus", 2, 0, false});
     zones_.push_back({"grass", 3, 0, false});
     zones_.push_back({"vedgie", 4, 0, false});
     zones_.push_back({"side", 5, 0, false});
