@@ -1,8 +1,6 @@
-CC=gcc
-CXX=g++ -fpermissive 
+CXX=clang++ -fpermissive
 RM=rm -f
-CPPFLAGS=-std=c++11
-LDFLAGS=
+CPPFLAGS= -std=c++11 -stdlib=libstdc++
 LDLIBS=-lwiringPi -lpthread -lssl -lcrypto
 SC=-fno-stack-protector -z execstack 
 
