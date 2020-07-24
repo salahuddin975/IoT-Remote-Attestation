@@ -4,7 +4,6 @@
 #include<netinet/in.h>
 #include<string.h>
 #include <pthread.h>
-#include <iostream>
 #include <link.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -191,7 +190,7 @@ int main(int argc, char **argv)
         pthread_t tid;
         pthread_create(&tid, NULL, checksum, NULL);
 
-        std::cout << "running main program." << std::endl;
+        printf("running main program.\n");
 
 
 	struct sockaddr_in addr;
