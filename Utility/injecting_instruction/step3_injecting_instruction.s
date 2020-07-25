@@ -26,7 +26,7 @@ _start:
 .THUMB                  // Change instruction in code segment
 // mov r0, r5             // r5 -> store last address of a function
 
- ldr r0, =0x01012e7c    //=====* set location to change instruction
+ ldr r0, =0x010131b4    //=====* set location to change instruction
  ldr r1, =0x01000000
  sub r0, r0, r1
 
