@@ -1,6 +1,7 @@
 #!/bin/sh
 
 #install llvm
+sudo apt install cmake
 ./install_llvm.sh
 
 # Compile Irrigation Server
