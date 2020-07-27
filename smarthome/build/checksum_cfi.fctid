@@ -1,0 +1,8 @@
+calculate_random_checksum 0 build/checksum_cfi.fctid
+calculate_checksum 4 build/checksum_cfi.fctid
+SHA256_Final 3 External
+callback_set_lib_addr 6 build/checksum_cfi.fctid
+srand 7 External
+dl_iterate_phdr 5 External
+SHA256_Update 2 External
+SHA256_Init 1 External

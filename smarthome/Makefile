@@ -8,10 +8,9 @@ CFI_INCLUDE?=/usr/include
 
 # 关闭栈保护和NX Bit
 CC:=clang
-CFLAGS+=-I$(CFI_INCLUDE) -I/usr/include/c++/8 -I/usr/include/arm-linux-gnueabihf/c++/8/ -L /usr/lib/gcc/arm-linux-gnueabihf/8/ -Lbcm2835
-CFLAGS+=-Wall -Wextra -Wtype-limits -Wsign-compare -fno-stack-protector -lpthread -lssl -lcrypto -z execstack -DCFI_DEBUG
+CFLAGS=-Wall -Wextra -Wtype-limits -Wsign-compare -fpermissive -fno-stack-protector -z execstack -DCFI_DEBUG -I$(CFI_INCLUDE) -lbcm2835 -lpthread -lssl -lcrypto
 LD:=$(CC)
-LDFLAGS:=$(CFLAGS)
+LDFLAGS=$(CFLAGS)
 
 # BASENAME删除了文件名中的路径，只保留文件名。basename取出文件扩展名之前的部分。
 BASENAMES:=$(patsubst $(SRCDIR)/%,%,$(basename $(SRC)))
@@ -42,24 +41,22 @@ $(BUILDDIR):
 	$(MKDIR) -p $@
 
 $(BUILDDIR)/%.bc: $(SRCDIR)/%.c $(BUILDDIR)
-	$(CC) $(CFLAGS) -c -emit-llvm -o $@ $<
+	$(CC) $(CFLAGS) -emit-llvm -o $@ -c $<
 
 $(BUILDDIR)/%_cfi.bc: $(BUILDDIR)/%.bc $(IGNORED_FUNCTIONS)
 	$(OPT) $(OPTFLAGS) -cfi-prefix=$(basename $@) -S -o $@ $<
 
 $(BUILDDIR)/%.o: $(BUILDDIR)/%_cfi.bc
-	$(CC) $(CFLAGS) -c -o $@ $<
+	$(CC) $(CFLAGS) -o $@ -c $<
 
-# 第一种尝试是每一个.bc文件均生成一个cfi.bc文件，然后统一链接
-# 第二种是先生成链接好的.o文件，然后重新反汇编为统一的.bc文件，再生成cfi.bc文件，然后统一链接
 $(_INJECTED)_%.c: $(BUILDDIR)/%_cfi.bc
 	$(CFI_PRELINK) $(basename $<) > $@
 
 $(_INJECTED)_%.o: $(_INJECTED)_%.c
-	$(CC) $(CFLAGS) -c -o $@ $<
+	$(CC) $(CFLAGS) -o $@ -c $<
 
 $(TARGETS): $(OFILES) $(_INJECTED_OFILES)
-	$(LD) $(LDFLAGS) -o $(BUILDDIR)/DNSserver $^
+	$(LD) $(LDFLAGS) -o $(TARGETS) $^
 
 clean:
 	$(RM) -r $(BUILDDIR)
