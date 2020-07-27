@@ -11,6 +11,7 @@ CC:=clang
 CFLAGS+=-I$(CFI_INCLUDE)
 CFLAGS+=-Wall -Wextra -Wtype-limits -Wsign-compare -fno-stack-protector -lpthread -lssl -lcrypto -z execstack -DCFI_DEBUG
 LD:=$(CC)
+LDFLAGS:=$(CFLAGS)
 
 # BASENAME删除了文件名中的路径，只保留文件名。basename取出文件扩展名之前的部分。
 BASENAMES:=$(patsubst $(SRCDIR)/%,%,$(basename $(SRC)))
@@ -20,6 +21,19 @@ OFILES:=$(patsubst $(SRCDIR)/%.c,$(BUILDDIR)/%.o,$(SRC))
 TARGETS:= $(BUILDDIR)/DNSserver
 MKDIR?=mkdir
 
+# PICON Configeration
+IGNORED_FUNCTIONS:=ignored_functions.txt
+CFI_PASS?=/usr/lib/picon/libCFI.so
+CFI_PRELINK?=/usr/bin/picon-prelink
+OPT?=opt-3.7
+OPTFLAGS:=-load $(CFI_PASS) -cfi -cfi-level=1 -cfi-ignore=$(IGNORED_FUNCTIONS)
+
+
+######################
+_INJECTED:=$(BUILDDIR)/cfi_injected
+_INJECTED_OFILES:=$(patsubst $(SRCDIR)/%.c,$(_INJECTED)_%.o,$(SRC))
+
+.NOTPARALLEL: all clean
 .PHONY: all clean
 
 all: clean $(TARGETS)
@@ -27,11 +41,25 @@ all: clean $(TARGETS)
 $(BUILDDIR):
 	$(MKDIR) -p $@
 
-$(BUILDDIR)/%.o: $(SRCDIR)/%.c $(BUILDDIR)
+$(BUILDDIR)/%.bc: $(SRCDIR)/%.c $(BUILDDIR)
+	$(CC) $(CFLAGS) -c -emit-llvm -o $@ $<
+
+$(BUILDDIR)/%_cfi.bc: $(BUILDDIR)/%.bc $(IGNORED_FUNCTIONS)
+	$(OPT) $(OPTFLAGS) -cfi-prefix=$(basename $@) -S -o $@ $<
+
+$(BUILDDIR)/%.o: $(BUILDDIR)/%_cfi.bc
 	$(CC) $(CFLAGS) -c -o $@ $<
 
-$(BUILDDIR)/DNSserver: $(OFILES)
-	$(CC) $(CFLAGS) -o $(BUILDDIR)/DNSserver $^
+# 第一种尝试是每一个.bc文件均生成一个cfi.bc文件，然后统一链接
+# 第二种是先生成链接好的.o文件，然后重新反汇编为统一的.bc文件，再生成cfi.bc文件，然后统一链接
+$(_INJECTED)_%.c: $(BUILDDIR)/%_cfi.bc
+	$(CFI_PRELINK) $(basename $<) > $@
+
+$(_INJECTED)_%.o: $(_INJECTED)_%.c
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+$(TARGETS): $(OFILES) $(_INJECTED_OFILES)
+	$(LD) $(LDFLAGS) -o $(BUILDDIR)/DNSserver $^
 
 clean:
 	$(RM) -r $(BUILDDIR)
