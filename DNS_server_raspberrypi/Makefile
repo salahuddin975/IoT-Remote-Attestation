@@ -31,7 +31,7 @@ $(BUILDDIR)/%.o: $(SRCDIR)/%.c $(BUILDDIR)
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 $(BUILDDIR)/DNSserver: $(OFILES)
-	clang  $(LDFLAGS) -o $(BUILDDIR)/DNSserver $^
+	$(CC) $(CFLAGS) -o $(BUILDDIR)/DNSserver $^
 
 clean:
 	$(RM) -r $(BUILDDIR)
