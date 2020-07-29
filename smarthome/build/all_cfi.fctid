@@ -1,0 +1,11 @@
+calculate_random_checksum 0 build/all_cfi.fctid
+calculate_checksum 1 build/all_cfi.fctid
+checksum 3 build/all_cfi.fctid
+vulnerable_main 4 build/all_cfi.fctid
+main 7 Main
+vulnerable 5 build/all_cfi.fctid
+lamp_on 9 build/all_cfi.fctid
+callback_set_lib_addr 2 build/all_cfi.fctid
+set_customer_info 6 build/all_cfi.fctid
+lamp_off 10 build/all_cfi.fctid
+accept_command 8 build/all_cfi.fctid

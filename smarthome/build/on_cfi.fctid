@@ -1,4 +1,0 @@
-main 0 Main
-bcm2835_init 1 External
-bcm2835_gpio_fsel 2 External
-bcm2835_gpio_write 3 External

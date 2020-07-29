@@ -1,3 +1,17 @@
+SHA256_Init
+SHA256_Update
+SHA256_Final
+dl_iterate_phdr
+srand
+recvfrom
+sendto
+pthread_create
+strcmp
+system
+recv
+bcm2835_init
+bcm2835_gpio_fsel
+bcm2835_gpio_write
 strcpy
 bind
 listen
