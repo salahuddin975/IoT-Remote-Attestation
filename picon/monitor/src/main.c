@@ -42,6 +42,14 @@ int mask_sigpipe() {
   return sigaction(SIGPIPE, &sa, 0);
 }
 
+void handler(int sig) {
+    if (sig == SIGCHLD) {
+        int status;
+        waitpid(-1, &status, WNOHANG);
+        exit(0);
+    }
+}
+
 int main (int argc, char *argv[]) {
   char buffer[128];
   int fd_client_to_monitor[2];
@@ -135,7 +143,7 @@ int main (int argc, char *argv[]) {
           ++i;
         }
       }
-
+      signal(SIGCHLD, handler);
       LOG_DEBUG_MONITOR("main loop\n");
       err = monitor_run(data);
       if(!err) {
@@ -154,10 +162,10 @@ int main (int argc, char *argv[]) {
     }
     LOG_DEBUG_MONITOR("exits with status = %i\n", err);
 
-    /*if(err) {
+    if(err) {
         LOG_DEBUG_MONITOR("killing client\n");
         kill(child_pid, SIGKILL);
-    }*/
+    }
     monitor_data_free(&data);
     /*
     void *retval;
