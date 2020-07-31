@@ -54,7 +54,7 @@ The following files can be edited to change or set options:
 ### Picon Installation
 
 ```
-sudo apt install cmake gcc-arm-none-eabi gcc-arm-linux-gnueabi
+sudo apt install cmake gcc-arm-none-eabi
 wget "https://releases.llvm.org/3.7.0/clang+llvm-3.7.0-armv7a-linux-gnueabihf.tar.xz"
 tar xf clang+llvm-3.7.0-armv7a-linux-gnueabihf.tar.xz
 cd clang+llvm-3.7.0-armv7a-linux-gnueabihf/
