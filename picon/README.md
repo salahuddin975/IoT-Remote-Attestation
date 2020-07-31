@@ -66,7 +66,6 @@ sudo apt install llvm-3.7
 cd ..
 git clone https://github.com/salahuddin975/IoT-Remote-Attestation.git
 cd IoT-Remote-Attestation/picon/
-vi Makefile #change llvm-config-3.8 to llvm-config-3.7 and change opt-3.8 to opt-3.7
 make & sudo make install
 ```
 
