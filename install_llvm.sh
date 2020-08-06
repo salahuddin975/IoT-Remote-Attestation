@@ -8,4 +8,3 @@ sudo cp -r lib/* /usr/lib/
 sudo cp -r share/* /usr/share/
 sudo apt install llvm-3.7
 rm -r clang+llvm-3.7.0-armv7a-linux-gnueabihf*
-
