@@ -1,3 +1,0 @@
-gcc - Smarthome-gcc
-clang - Smarthome-clang
-picon - Smarthome-picon

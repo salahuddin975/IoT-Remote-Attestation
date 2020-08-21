@@ -18,7 +18,7 @@ OFILES:=$(patsubst $(SRCDIR)/%.c,$(BUILDDIR)/%.o,$(SRC))
 IRFILES:=$(patsubst $(SRCDIR)/%.c,$(BUILDDIR)/%.bc,$(SRC))
 # TARGET用于生成最终编译的目标文件，这里的模版是为所有的源文件均生成可执行文件，我们需要的是将目录下所有c文件链接生成一个最后的可执行文件
 # TARGETS:=$(addprefix $(BUILDDIR)/,$(BASENAMES))
-TARGETS:= $(BUILDDIR)/Smarthome-picon
+TARGETS:= Smarthome-picon
 MKDIR?=mkdir
 
 # PICON Configeration
