@@ -95,16 +95,16 @@ int open_socket(){
     }
     while(1)
     {
-        printf("Listening on port: %d\n", SERVER_PORT);
+        /*printf("Listening on port: %d\n", SERVER_PORT);*/
         client = accept(serverSocket, (struct sockaddr*)&clientAddr, (socklen_t*)&addr_len);
         if(client < 0)
         {
             perror("accept");
             continue;
         }
-        printf("Waiting for messages...\n");
+        /*printf("Waiting for messages...\n");
         printf("IP is %s\n", inet_ntoa(clientAddr.sin_addr));
-        printf("Port is %d\n", htons(clientAddr.sin_port));
+        printf("Port is %d\n", htons(clientAddr.sin_port));*/
         while(1)
         {
             printf("Recieving messages:");
@@ -119,11 +119,11 @@ int open_socket(){
             if(strcmp(buffer, "quit") == 0)
                 break;
             if(strcmp(buffer, "Start") == 0){
-                printf("Start Recording CFI");
+                /*printf("Start Recording CFI");*/
                 CFI_LOCK = 1;
             }
             else if(strcmp(buffer, "Finish")) {
-                printf("Stop Recording CFI");
+                /*printf("Stop Recording CFI");*/
                 if (CFI_LOCK == 1) {
                     if (CFI_HASH != 0) send(client, CFI_HASH, sizeof(CFI_HASH), 0);
                 }

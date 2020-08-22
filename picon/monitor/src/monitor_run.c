@@ -75,42 +75,42 @@ int monitor_run(const monitor_data data) {
   while(1) {
     switch(sig.event) {
     case CFI_BEFORE_JUMP: /**/
-        if(CFI_LOCK==0)
+        /*if(CFI_LOCK==0)
             LOG_DEBUG_MONITOR("received BEFORE_JUMP (%u,%u,%u)\n", sig.module, sig.function, sig.block);
-        else if(CFI_LOCK==1){
+        else */if(CFI_LOCK==1){
             char cfi_str[100];
             int str_len = 0;
             str_len = snprintf(cfi_str, sizeof(cfi_str),"received BEFORE_JUMP (%u,%u,%u)\n", sig.module, sig.function, sig.block);
             CFI_HASH = hashchain(cfi_str);
         }
-      if(unlikely((state != SM_STATE_InFunction) ||
+      /*if(unlikely((state != SM_STATE_InFunction) ||
                   (current_module != sig.module) ||
                   (current_function != sig.function) ||
                   (curblock != sig.block))) {
         error = 4;
-          /*goto monitor_run_exit;*/
-      }
+          goto monitor_run_exit;
+      }*/
       state = SM_STATE_ExpectJump;
       break;
 
 
     case CFI_AFTER_JUMP: /**/
-        if(CFI_LOCK==0)
+        /*if(CFI_LOCK==0)
             LOG_DEBUG_MONITOR("received AFTER_JUMP (%u,%u,%u)\n", sig.module, sig.function, sig.block);
-        else if(CFI_LOCK==1){
+        else */if(CFI_LOCK==1){
             char cfi_str[100];
             int str_len = 0;
             str_len = snprintf(cfi_str, sizeof(cfi_str),"received AFTER_JUMP (%u,%u,%u)\n", sig.module, sig.function, sig.block);
             CFI_HASH = hashchain(cfi_str);
         }
-      if(unlikely((state != SM_STATE_ExpectJump) ||
+      /*if(unlikely((state != SM_STATE_ExpectJump) ||
                   (current_module != sig.module) ||
                   (current_function != sig.function) ||
                   (sig.block >= current_function_data->nb_blocks) ||
                   (!(current_function_data->control_flow_graph[curblock][sig.block])))) {
         error = 4;
-          /*goto monitor_run_exit;*/
-      }
+          goto monitor_run_exit;
+      }*/
       if(unlikely(OPTION_sm_trace &&
                   (current_function_data->immediate_post_dominator[topblock] == sig.block))) {
         BLOCK_STACK_PUSH(blocks, topblock, error);
@@ -121,20 +121,20 @@ int monitor_run(const monitor_data data) {
       break;
 
     case CFI_CALL: /**/
-        if(CFI_LOCK==0)
+        /*if(CFI_LOCK==0)
             LOG_DEBUG_MONITOR("received CALL (%u,%u)\n", sig.module, sig.function);
-        else if(CFI_LOCK==1){
+        else */if(CFI_LOCK==1){
             char cfi_str[100];
             int str_len = 0;
             str_len = snprintf(cfi_str, sizeof(cfi_str),"received CALL (%u,%u)\n", sig.module, sig.function);
             CFI_HASH = hashchain(cfi_str);
         }
-      if(unlikely((state != SM_STATE_InFunction) ||
+      /*if(unlikely((state != SM_STATE_InFunction) ||
                   (sig.function >= current_module_data->nb_functions) ||
                   (!(current_module_data->call_graph[current_function][sig.function])))) {
         error = 4;
-          /*goto monitor_run_exit;*/
-      }
+          goto monitor_run_exit;
+      }*/
       if(unlikely(OPTION_sm_trace)) {
         BLOCK_STACK_PUSH(blocks, topblock, error);
       }
@@ -149,9 +149,9 @@ int monitor_run(const monitor_data data) {
       CALL_STACK_PUSH(calls, ncall, error);
       if(FUNCTION_IS_EXTERNAL(current_module_data->functions[sig.function])) {
         const module_function_ids some_reloc = current_module_data->relocations[sig.function];
-          if(CFI_LOCK==0)
+          /*if(CFI_LOCK==0)
               LOG_DEBUG_MONITOR("\trelocated CALL (%u,%u)\n", MODULE_FUNCTION_GET_MODULE(some_reloc), MODULE_FUNCTION_GET_FUNCTION(some_reloc));
-          else if(CFI_LOCK==1){
+          else */if(CFI_LOCK==1){
               char cfi_str[100];
               int str_len = 0;
               str_len = snprintf(cfi_str, sizeof(cfi_str),"\trelocated CALL (%u,%u)\n", MODULE_FUNCTION_GET_MODULE(some_reloc), MODULE_FUNCTION_GET_FUNCTION(some_reloc));
@@ -168,9 +168,9 @@ int monitor_run(const monitor_data data) {
       break;
 
     case CFI_ENTER: /**/
-        if(CFI_LOCK==0)
+        /*if(CFI_LOCK==0)
             LOG_DEBUG_MONITOR("received ENTER (%u,%u)\n", sig.module, sig.function);
-        else if(CFI_LOCK==1){
+        else */if(CFI_LOCK==1){
             char cfi_str[100];
             int str_len = 0;
             str_len = snprintf(cfi_str, sizeof(cfi_str),"received ENTER (%u,%u)\n", sig.module, sig.function);
@@ -178,52 +178,54 @@ int monitor_run(const monitor_data data) {
         }
 
       if(unlikely(state == SM_STATE_Ready)) {
-        if(unlikely(sig.module >= data.nb_modules)) {
+        /*if(unlikely(sig.module >= data.nb_modules)) {
           error = 6;
-            /*goto monitor_run_exit;*/
-        }
+          goto monitor_run_exit;
+        }*/
         current_module_data = &(data.modules[sig.module]);
-        if(unlikely((sig.function >= current_module_data->nb_functions) ||
+        /*if(unlikely((sig.function >= current_module_data->nb_functions) ||
                     (!FUNCTION_IS_ENTRYPOINT(current_module_data->functions[sig.function])))) {
           error = 7;
-            /*goto monitor_run_exit;*/
-        } else {
+          goto monitor_run_exit;
+        } else {*/
           curblock = topblock = FUNCTION_ENTRY_BLOCK_ID;
           current_module = sig.module;
           current_function = sig.function;
           current_function_data = &(current_module_data->functions[sig.function]);
-        }
-      } else if(unlikely((state != SM_STATE_ExpectCall) ||
+        /*}*/
+      }
+      /*else if(unlikely((state != SM_STATE_ExpectCall) ||
                          (current_module != sig.module) ||
                          (current_function != sig.function) ||
                          (curblock != FUNCTION_ENTRY_BLOCK_ID))) {
         error = 4;
-          /*goto monitor_run_exit;*/
-      }
+          goto monitor_run_exit;
+      }*/
       state = SM_STATE_InFunction;
       break;
 
 
     case CFI_EXIT: /**/
-        if(CFI_LOCK==0)
+        /*if(CFI_LOCK==0)
             LOG_DEBUG_MONITOR("received EXIT (%u,%u)\n", sig.module, sig.function);
-        else if(CFI_LOCK==1){
+        else */if(CFI_LOCK==1){
             char cfi_str[100];
             int str_len = 0;
             str_len = snprintf(cfi_str, sizeof(cfi_str),"received EXIT (%u,%u)\n", sig.module, sig.function);
             CFI_HASH = hashchain(cfi_str);
         }
-      if(unlikely((state != SM_STATE_InFunction) ||
+      /*if(unlikely((state != SM_STATE_InFunction) ||
                   (current_module != sig.module) ||
                   (current_function != sig.function))) {
         error = 4;
-          /*goto monitor_run_exit;*/
-      }
+          goto monitor_run_exit;
+      }*/
       if(unlikely(CALL_STACK_IS_EMPTY(calls))) {
+        /*
         if(unlikely(!FUNCTION_IS_ENTRYPOINT(current_module_data->functions[current_function]))) {
           error = 7;
-            /*goto monitor_run_exit;*/
-        }
+            goto monitor_run_exit;
+        }*/
         state = SM_STATE_Ready;
         /* simplify this case since unlikely */
         WRITE_MONITOR_ANSWER(data.fd_monitor_to_client, ok_resp, error);
@@ -236,10 +238,10 @@ int monitor_run(const monitor_data data) {
         current_module_data = &(data.modules[current_module]);
         current_function_data = &(current_module_data->functions[current_function]);
         BLOCK_STACK_RESTORE_TOP(blocks, ncall.blocks_sp);
-        if(unlikely(BLOCK_STACK_IS_EMPTY(blocks))) {
+        /*if(unlikely(BLOCK_STACK_IS_EMPTY(blocks))) {
           error = 7;
-            /*goto monitor_run_exit;*/
-        }
+            goto monitor_run_exit;
+        }*/
         BLOCK_STACK_POP(blocks, curblock);
         if(unlikely(OPTION_sm_trace)) {
           BLOCK_STACK_POP(blocks, topblock);
@@ -249,25 +251,25 @@ int monitor_run(const monitor_data data) {
       break;
 
     case CFI_RETURNED: /**/
-        if(CFI_LOCK==0)
+        /*if(CFI_LOCK==0)
             LOG_DEBUG_MONITOR("received RETURNED (%u,%u)\n", sig.module, sig.function);
-        else if(CFI_LOCK==1){
+        else */if(CFI_LOCK==1){
             char cfi_str[100];
             int str_len = 0;
             str_len = snprintf(cfi_str, sizeof(cfi_str),"received RETURNED (%u,%u)\n", sig.module, sig.function);
             CFI_HASH = hashchain(cfi_str);
         }
-      if(unlikely((state != SM_STATE_ExpectReturn) ||
+      /*if(unlikely((state != SM_STATE_ExpectReturn) ||
                   (sig.function >= current_module_data->nb_functions) ||
                   (!(current_module_data->call_graph[current_function][sig.function])))) {
         error = 4;
-          /*goto monitor_run_exit;*/
-      }
+          goto monitor_run_exit;
+      }*/
       state = SM_STATE_InFunction;
       break;
 
     default:
-      LOG_ERROR_MONITOR("malformed sig received\n");
+      /*LOG_ERROR_MONITOR("malformed sig received\n");*/
       error = 5;
       /*goto monitor_run_exit;*/
     }
@@ -285,7 +287,7 @@ int monitor_run(const monitor_data data) {
 
  monitor_run_exit:
   if(error) {
-    LOG_ERROR_MONITOR("run failed with error = %u\n", error);
+    /*LOG_ERROR_MONITOR("run failed with error = %u\n", error);*/
     if(OPTION_sm_trace) {
       unsigned int err = 0;
       BLOCK_STACK_PUSH(blocks, curblock, err);
