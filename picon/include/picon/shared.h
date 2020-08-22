@@ -77,7 +77,7 @@ typedef struct {
 
 #define READ_CLIENT_SIGNAL(fd,dst,err)                          \
   do {                                                          \
-    LOG_DEBUG_MONITOR("waiting for client signal\n");           \
+    /*LOG_DEBUG_MONITOR("waiting for client signal\n"); */          \
     if(unlikely(read((fd),&(dst),sizeof(client_signal)) !=      \
                 sizeof(client_signal))) {                       \
       (err) = 1;                                                \
@@ -87,7 +87,7 @@ typedef struct {
 
 #define WRITE_CLIENT_SIGNAL(fd,dst,err)                         \
   do {                                                          \
-    LOG_DEBUG_CLIENT("sending signal\n");                       \
+    /*LOG_DEBUG_CLIENT("sending signal\n");*/                       \
     if(unlikely(write((fd),&(dst),sizeof(client_signal)) !=     \
                 sizeof(client_signal))) {                       \
       (err) = 1;                                                \
@@ -256,7 +256,7 @@ typedef struct {
 
 #define READ_LOADING_PACKET(fd,dst,err)                         \
   do {                                                          \
-    LOG_DEBUG_MONITOR("waiting for loading packet\n");          \
+    /*LOG_DEBUG_MONITOR("waiting for loading packet\n"); */         \
     (dst).size = 0;                                             \
     (dst).value = NULL;                                         \
     if(read((fd),&((dst).event),sizeof(loading_event)) !=       \
@@ -288,7 +288,7 @@ typedef struct {
 
 #define WRITE_LOADING_PACKET(fd,src,err)                        \
   do {                                                          \
-    LOG_DEBUG_CLIENT("sending loading packet (size = %u)\n", (src).size); \
+    /*LOG_DEBUG_CLIENT("sending loading packet (size = %u)\n", (src).size); \*/
     if(write((fd),&((src).event),sizeof(loading_event)) !=      \
        sizeof(loading_event)) {                                 \
       (err) = 1;                                                \
@@ -314,7 +314,7 @@ typedef struct {
 
 #define READ_MONITOR_TO_LOADING_PACKET(fd,dst,err)                      \
   do {                                                                  \
-    LOG_DEBUG_CLIENT("waiting for monitor to loading packet\n");        \
+    /*LOG_DEBUG_CLIENT("waiting for monitor to loading packet\n");    */    \
     if(read((fd),&((dst).id),sizeof(module_id)) != sizeof(module_id)) { \
       (err) = 1;                                                        \
     }                                                                   \

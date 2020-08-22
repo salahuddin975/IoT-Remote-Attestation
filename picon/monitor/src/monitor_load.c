@@ -52,7 +52,7 @@ int load_section_function_id(const msg_fct_l *const fct,
     return 2;
   }
 
-  LOG_DEBUG_MONITOR("module has %u function references\n", data->nb_functions);
+  /*LOG_DEBUG_MONITOR("module has %u function references\n", data->nb_functions);*/
 
   ptr = fct->fcts;
   for(i = 0; i < data->nb_functions; ++i) {
@@ -72,13 +72,13 @@ int load_section_function_id(const msg_fct_l *const fct,
     if(FUNCTION_IS_ENTRYPOINT_FINI(*fd)) {
       ++(data->nb_entrypoint_finis);
     }
-    LOG_DEBUG_MONITOR("\tid=%6u main=%s init=%s fini=%s external=%s name=%s\n",
+    /*LOG_DEBUG_MONITOR("\tid=%6u main=%s init=%s fini=%s external=%s name=%s\n",
                       ptr->f_id,
                       FUNCTION_IS_ENTRYPOINT_MAIN(*fd) ? "YES" : "NO ",
                       FUNCTION_IS_ENTRYPOINT_INIT(*fd) ? "YES" : "NO ",
                       FUNCTION_IS_ENTRYPOINT_FINI(*fd) ? "YES" : "NO ",
                       FUNCTION_IS_EXTERNAL(*fd) ? "YES" : "NO ",
-                      fd->name);
+                      fd->name);*/
     ptr = (const msg_fct_t*)(1+strchr(ptr->f_name,'\0'));
   }
 
@@ -126,7 +126,7 @@ int load_section_function_transition(const msg_fct_trans_l * const trans,
         LOG_ERROR_MONITOR("invalid function_id = %u\n", *cptr);
         return 3;
       }
-      LOG_DEBUG_MONITOR("\tcall from->to = %6u -> %6u\n", ptr->f_id, *cptr);
+      /*LOG_DEBUG_MONITOR("\tcall from->to = %6u -> %6u\n", ptr->f_id, *cptr);*/
       data->call_graph[ptr->f_id][*cptr] = 1;
       ++cptr;
     }
@@ -201,7 +201,7 @@ int load_section_block_transition(const msg_block_trans_l * const trans,
         LOG_ERROR_MONITOR("invalid block_id %u (nb_blocks = %u)\n", *cptr, fdata->nb_blocks);
         return 10;
       }
-      LOG_DEBUG_MONITOR("\tjump from->to = %6u -> %6u\n", ptr->b_id, *cptr);
+      /*LOG_DEBUG_MONITOR("\tjump from->to = %6u -> %6u\n", ptr->b_id, *cptr);*/
       fdata->control_flow_graph[ptr->b_id][*cptr] = 1;
       ++cptr;
     }
@@ -244,7 +244,7 @@ int load_section_block_ipd(const msg_block_ipd_l * const ipd,
       return 5;
     }
 
-    LOG_DEBUG_MONITOR("\tfunction=%6u block=%6u ipd=%6u\n", ptr->f_id, ptr->b_id, ptr->b_ipd_id);
+    /*LOG_DEBUG_MONITOR("\tfunction=%6u block=%6u ipd=%6u\n", ptr->f_id, ptr->b_id, ptr->b_ipd_id);*/
     fdata->immediate_post_dominator[ptr->b_id] = ptr->b_ipd_id;
 
     ++ptr;
@@ -261,7 +261,7 @@ int monitor_load_module(monitor_data * const mon) {
   int err = 0;
   int terminated = 0;
 
-  LOG_DEBUG_MONITOR("waiting for new module\n");
+  /*LOG_DEBUG_MONITOR("waiting for new module\n");*/
 
   pkt.size = 0;
   pkt.value = NULL;
@@ -272,7 +272,7 @@ int monitor_load_module(monitor_data * const mon) {
   } else {
     switch(pkt.event) {
     case CFI_LOADING_MODULE_BEGIN:
-      LOG_DEBUG_MONITOR("received CFI_LOADING_MODULE_BEGIN\n");
+      /*LOG_DEBUG_MONITOR("received CFI_LOADING_MODULE_BEGIN\n");*/
       if(mon->nb_modules) {
         ++(mon->nb_modules);
         mon->modules = realloc(mon->modules, sizeof(module_data) * mon->nb_modules);
@@ -298,7 +298,7 @@ int monitor_load_module(monitor_data * const mon) {
       break;
 
     case CFI_LOADING_TERMINATED:
-      LOG_DEBUG_MONITOR("received CFI_LOADING_TERMINATED\n");
+      /*LOG_DEBUG_MONITOR("received CFI_LOADING_TERMINATED\n");*/
       terminated = 1;
       break;
 
@@ -327,27 +327,27 @@ int monitor_load_module(monitor_data * const mon) {
 
       switch(pkt.event) {
       case CFI_LOADING_SECTION_FUNCTION_ID:
-        LOG_DEBUG_MONITOR("received CFI_LOADING_SECTION_FUNCTION_ID\n");
+        /*LOG_DEBUG_MONITOR("received CFI_LOADING_SECTION_FUNCTION_ID\n");*/
         err = load_section_function_id(&(pkt.value->fct), modata);
         break;
 
       case CFI_LOADING_SECTION_FUNCTION_TRANSITION:
-        LOG_DEBUG_MONITOR("received CFI_LOADING_SECTION_FUNCTION_TRANSITION\n");
+        /*LOG_DEBUG_MONITOR("received CFI_LOADING_SECTION_FUNCTION_TRANSITION\n");*/
         err = load_section_function_transition(&(pkt.value->fct_trans), modata);
         break;
 
       case CFI_LOADING_SECTION_BLOCK_TRANSITION:
-        LOG_DEBUG_MONITOR("received CFI_LOADING_SECTION_BLOCK_TRANSITION\n");
+        /*LOG_DEBUG_MONITOR("received CFI_LOADING_SECTION_BLOCK_TRANSITION\n");*/
         err = load_section_block_transition(&(pkt.value->block_trans), modata);
         break;
 
       case CFI_LOADING_SECTION_BLOCK_IPD:
-        LOG_DEBUG_MONITOR("received CFI_LOADING_SECTION_BLOCK_IPD\n");
+        /*LOG_DEBUG_MONITOR("received CFI_LOADING_SECTION_BLOCK_IPD\n");*/
         err = load_section_block_ipd(&(pkt.value->block_ipd), modata);
         break;
 
       case CFI_LOADING_MODULE_END:
-        LOG_DEBUG_MONITOR("received CFI_LOADING_MODULE_END\n");
+        /*LOG_DEBUG_MONITOR("received CFI_LOADING_MODULE_END\n");*/
         if(OPTION_sm_dump) {
           unsigned int i;
           monitor_call_graph(modata);
@@ -383,7 +383,7 @@ int compute_relocations_of_module(monitor_data * const data,
   unsigned int j;
   module_data * const midata = &(data->modules[mid]);
 
-  LOG_DEBUG_MONITOR("computing relocation of module id=%u\n", mid);
+  /*LOG_DEBUG_MONITOR("computing relocation of module id=%u\n", mid);*/
 
   for(j = 0; j < midata->nb_functions; ++j) {
     if(FUNCTION_IS_EXTERNAL(midata->functions[j])) {
@@ -400,7 +400,7 @@ int compute_relocations_of_module(monitor_data * const data,
                (strcmp(midata->functions[j].name, mkdata->functions[l].name) == 0)) {
               midata->relocations[j] = MODULE_FUNCTION(k, l);
               not_resolved = 0;
-              LOG_DEBUG_MONITOR("\trelocate %6u -> (%3u,%6u)\n", j, mid, l);
+              /*LOG_DEBUG_MONITOR("\trelocate %6u -> (%3u,%6u)\n", j, mid, l);*/
             }
             ++l;
           }
@@ -409,9 +409,9 @@ int compute_relocations_of_module(monitor_data * const data,
       }
 
       if(not_resolved) {
-        LOG_DEBUG_MONITOR("\tno relocation found for id=%u (name=%s)\n", j, midata->functions[j].name);
+       /*LOG_DEBUG_MONITOR("\tno relocation found for id=%u (name=%s)\n", j, midata->functions[j].name);*/
         if(unresolved_is_fatal) {
-          LOG_ERROR_MONITOR("unresolved external function : %s\n", midata->functions[j].name);
+          /*LOG_ERROR_MONITOR("unresolved external function : %s\n", midata->functions[j].name);*/
           return 1;
         }
       }
@@ -452,7 +452,7 @@ int monitor_load(const pid_t client_pid,
       if(!err) {
         const unsigned int nb = data->modules[data->nb_modules - 1].nb_entrypoint_inits;
         i = 0;
-        LOG_DEBUG_MONITOR("%u inits are expected\n", nb);
+        /*LOG_DEBUG_MONITOR("%u inits are expected\n", nb);*/
         while((i < nb) && !err) {
           err = monitor_run(*data);
           ++i;
