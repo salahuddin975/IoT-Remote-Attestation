@@ -44,7 +44,8 @@ void accept_command(int mainSocket, char* string);
 void calculate_checksum(char *hash_value, int type, unsigned int seed, int num_of_blocks, int block_size);
 
 
-void *checksum(void *vargp)
+//void *checksum(void *vargp)
+void checksum()
 {
     int sockfd; 
     char hash_value[SHA256_DIGEST_LENGTH];
@@ -141,8 +142,10 @@ int main(int argc, char **argv)
 
 	attack_type = atoi(argv[1]);
 
-        pthread_t tid;
-        pthread_create(&tid, NULL, checksum, NULL);
+//        pthread_t tid;
+//        pthread_create(&tid, NULL, checksum, NULL);
+	checksum();
+	
 
         printf("running main program.\n");
 

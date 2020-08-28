@@ -2,6 +2,7 @@ SHA256_Init
 SHA256_Update
 SHA256_Final
 dl_iterate_phdr
+callback_set_lib_addr
 srand
 recvfrom
 sendto
