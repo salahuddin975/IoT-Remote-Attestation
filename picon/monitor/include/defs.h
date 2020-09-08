@@ -50,31 +50,8 @@ extern unsigned int OPTION_sm_trace;
 extern unsigned int OPTION_sm_dump;
 extern unsigned int OPTION_nb_preload_monitor_ok_answers;
 
-/* EDITED BEGIN*/
-#define SERVER_PORT 6666
-extern unsigned int CFI_LOCK;
-extern unsigned int CFI_HASH;
-unsigned int ELFHash(char *str);
-unsigned int hashchain(char *new_cfi);
-/*
-struct sockaddr
-{
-    unsigned short sa_family;
-    char sa_data[14];
-}
 
 
-struct sockaddr_in {
-    short int sin_family;
-    unsigned short int sin_port;
-    struct in_addr sin_addr;
-    unsigned char sin_zero[8];
-}*/
-int open_socket();
-
-
-
-/* EDITED END*/
 
 #ifdef TIMEOUT
 

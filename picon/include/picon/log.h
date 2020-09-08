@@ -4,12 +4,15 @@
 #include <stdio.h>
 
 
+
 #define _LOG_STR_ERROR "\033[31;01m[error]\033[00m"
 #define _LOG_STR_DEBUG "\033[34;01m[debug]\033[00m"
 #define _LOG_STR_TRACE "\033[33;01m[trace]\033[00m"
 
 #define _LOG_STR_MONITOR "\033[35;01m[monitor]\033[00m"
 #define _LOG_STR_CLIENT "\033[36;01m[ client]\033[00m"
+
+
 
 #ifdef SILENT
 #define _LOG(...)

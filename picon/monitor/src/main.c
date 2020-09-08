@@ -19,7 +19,7 @@
 #include "defs.h"
 #include "monitor_load.h"
 #include "monitor_run.h"
-#include <pthread.h>
+
 #include <stdlib.h>
 #include <fcntl.h>
 #include <unistd.h>
@@ -29,10 +29,7 @@
 #include <signal.h>
 #include <fcntl.h>
 
-/*Modify
-unsigned int CFI_LOCK;
-unsigned int CFI_HASH;
-Begin*/
+
 
 static
 int mask_sigpipe() {
@@ -42,13 +39,7 @@ int mask_sigpipe() {
   return sigaction(SIGPIPE, &sa, 0);
 }
 
-void handler(int sig) {
-    if (sig == SIGCHLD) {
-        int status;
-        waitpid(-1, &status, WNOHANG);
-        exit(0);
-    }
-}
+
 
 int main (int argc, char *argv[]) {
   char buffer[128];
@@ -110,14 +101,10 @@ int main (int argc, char *argv[]) {
   }
 
 
-  /*LOG_DEBUG_MONITOR("forking\n");*/
+  LOG_DEBUG_MONITOR("forking\n");
 
   if((child_pid = fork()) > 0) {
     /* monitor process */
-    pthread_t thread;
-    int ret_thrd1;
-    ret_thrd1 = pthread_create(&thread, NULL, (int *)&open_socket,NULL);
-
     close(fd_client_to_monitor[1]);
     close(fd_monitor_to_client[0]);
     close(fd_loading_to_monitor[1]);
@@ -137,14 +124,14 @@ int main (int argc, char *argv[]) {
       if(OPTION_nb_preload_monitor_ok_answers > 0) {
         const monitor_answer ok_resp = { .event = CFI_OK };
         unsigned int i = 0;
-        /*LOG_DEBUG_MONITOR("preloading %u OK answers\n", OPTION_nb_preload_monitor_ok_answers);*/
+        LOG_DEBUG_MONITOR("preloading %u OK answers\n", OPTION_nb_preload_monitor_ok_answers);
         while((i < OPTION_nb_preload_monitor_ok_answers) && !err) {
           WRITE_MONITOR_ANSWER(data.fd_monitor_to_client, ok_resp, err);
           ++i;
         }
       }
-      signal(SIGCHLD, handler);
-      /*LOG_DEBUG_MONITOR("main loop\n");*/
+
+      LOG_DEBUG_MONITOR("main loop\n");
       err = monitor_run(data);
       if(!err) {
         unsigned int i;
@@ -153,25 +140,27 @@ int main (int argc, char *argv[]) {
           nb += data.modules[i].nb_entrypoint_finis;
         }
         i = 0;
-        /*LOG_DEBUG_MONITOR("%u finis are expected\n", nb);*/
-        while(i < nb) {
+        LOG_DEBUG_MONITOR("%u finis are expected\n", nb);
+        while((i < nb) && !err) {
           err = monitor_run(data);
           ++i;
         }
       }
     }
-    /*LOG_DEBUG_MONITOR("exits with status = %i\n", err);*/
+
+    LOG_DEBUG_MONITOR("exits with status = %i\n", err);
 
     if(err) {
-        /*LOG_DEBUG_MONITOR("killing client\n");*/
-        kill(child_pid, SIGKILL);
+      LOG_DEBUG_MONITOR("killing client\n");
+      kill(child_pid, SIGKILL);
     }
+
     monitor_data_free(&data);
-    /*
-    void *retval;
-    pthread_join(thread, &retval);*/
+
     return err;
+
   } else if(child_pid == 0) {
+
     /* client process */
     close(fd_client_to_monitor[0]);
     close(fd_monitor_to_client[1]);
@@ -190,15 +179,15 @@ int main (int argc, char *argv[]) {
     snprintf(buffer, sizeof(buffer), "%u", fd_monitor_to_loading[0]);
     setenv(ENV_FD_MONITOR_TO_LOADING, buffer, 1);
 
-    /*LOG_DEBUG_CLIENT("exec\n");*/
+    LOG_DEBUG_CLIENT("exec\n");
     ++argv;
     (void)execve(argv[0], argv, environ);
 
-    /*LOG_ERROR_MONITOR("failed to exec : %s\n", strerror(errno));*/
+    LOG_ERROR_MONITOR("failed to exec : %s\n", strerror(errno));
     return -4;
   }
 
   /* error during fork */
-  /*LOG_ERROR_MONITOR("failed to fork : %s\n", strerror(errno));*/
+  LOG_ERROR_MONITOR("failed to fork : %s\n", strerror(errno));
   return -5;
 }
