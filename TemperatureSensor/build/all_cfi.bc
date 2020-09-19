@@ -1,0 +1,557 @@
+; ModuleID = 'build/all.bc'
+target datalayout = "e-m:e-p:32:32-i64:64-v128:64:128-a:0:32-n32-S64"
+target triple = "armv7-unknown-linux-gnueabihf"
+
+%struct._IO_FILE = type { i32, i8*, i8*, i8*, i8*, i8*, i8*, i8*, i8*, i8*, i8*, i8*, %struct._IO_marker*, %struct._IO_FILE*, i32, i32, i32, i16, i8, [1 x i8], i8*, i64, %struct._IO_codecvt*, %struct._IO_wide_data*, %struct._IO_FILE*, i8*, i32, i32, [40 x i8] }
+%struct._IO_marker = type opaque
+%struct._IO_codecvt = type opaque
+%struct._IO_wide_data = type opaque
+%struct.curl_slist = type { i8*, %struct.curl_slist* }
+
+@stderr = external global %struct._IO_FILE*, align 4
+@.str = private unnamed_addr constant [53 x i8] c"{ \22value1\22 : \22%s\22, \22value2\22 : \22%s\22, \22value3\22 : \22%s\22}\00", align 1
+@.str.1 = private unnamed_addr constant [31 x i8] c"Content-Type: application/json\00", align 1
+@.str.2 = private unnamed_addr constant [10 x i8] c"/dev/null\00", align 1
+@.str.3 = private unnamed_addr constant [2 x i8] c"w\00", align 1
+@.str.4 = private unnamed_addr constant [32 x i8] c"curl_easy_perform() failed: %s\0A\00", align 1
+@.str.5 = private unnamed_addr constant [31 x i8] c"Please enter only one argument\00", align 1
+@.str.1.6 = private unnamed_addr constant [4 x i8] c"%d\0A\00", align 1
+@.str.2.7 = private unnamed_addr constant [27 x i8] c"the parameter enterted %s\0A\00", align 1
+@.str.3.8 = private unnamed_addr constant [24 x i8] c"/sys/bus/w1/devices/28-\00", align 1
+@.str.4.9 = private unnamed_addr constant [10 x i8] c"/w1_slave\00", align 1
+@.str.5.10 = private unnamed_addr constant [4 x i8] c"%s\0A\00", align 1
+@.str.6 = private unnamed_addr constant [45 x i8] c"/sys/bus/w1/devices/28-021312eefeaa/w1_slave\00", align 1
+@.str.7 = private unnamed_addr constant [2 x i8] c"r\00", align 1
+@.str.8 = private unnamed_addr constant [36 x i8] c"temperature sensor cannot be found\0A\00", align 1
+@.str.9 = private unnamed_addr constant [3 x i8] c"%s\00", align 1
+@.str.10 = private unnamed_addr constant [4 x i8] c"Yes\00", align 1
+@.str.11 = private unnamed_addr constant [37 x i8] c"Sensor working, will print the temp\0A\00", align 1
+@.str.12 = private unnamed_addr constant [26 x i8] c"this is the old value %d\0A\00", align 1
+@.str.13 = private unnamed_addr constant [27 x i8] c"this is the new value %d\0A\0A\00", align 1
+@.str.14 = private unnamed_addr constant [21 x i8] c"we see a change 20 \0A\00", align 1
+@.str.15 = private unnamed_addr constant [3 x i8] c"%d\00", align 1
+@.str.16 = private unnamed_addr constant [74 x i8] c"https://maker.ifttt.com/trigger/TempChange/with/key/uQayuY3amwBonQr7RGtpk\00", align 1
+@.str.17 = private unnamed_addr constant [20 x i8] c"we see a change 10\0A\00", align 1
+@.str.18 = private unnamed_addr constant [27 x i8] c"both of them are positive\0A\00", align 1
+@.str.19 = private unnamed_addr constant [36 x i8] c"Change in temp, both were positive\0A\00", align 1
+@.str.20 = private unnamed_addr constant [19 x i8] c"both are negative\0A\00", align 1
+@.str.21 = private unnamed_addr constant [36 x i8] c"Change in temp, both were negative\0A\00", align 1
+
+; Function Attrs: nounwind
+define i32 @ifttt(i8* %where, i8* %v1, i8* %v2, i8* %v3) #0 {
+  %saved_retaddr_prolog = call i8* @llvm.returnaddress(i32 0)
+  call void @__CFI_INTERNAL_ENTER(i32 0, i8* %saved_retaddr_prolog)
+  %1 = alloca i32, align 4
+  %2 = alloca i8*, align 4
+  %3 = alloca i8*, align 4
+  %4 = alloca i8*, align 4
+  %5 = alloca i8*, align 4
+  %curl = alloca i8*, align 4
+  %res = alloca i32, align 4
+  %headers = alloca %struct.curl_slist*, align 4
+  %sbuf = alloca [4096 x i8], align 1
+  store i8* %where, i8** %2, align 4
+  store i8* %v1, i8** %3, align 4
+  store i8* %v2, i8** %4, align 4
+  store i8* %v3, i8** %5, align 4
+  store %struct.curl_slist* null, %struct.curl_slist** %headers, align 4
+  %6 = getelementptr inbounds [4096 x i8], [4096 x i8]* %sbuf, i32 0, i32 0
+  %7 = load i8*, i8** %3, align 4
+  %8 = load i8*, i8** %4, align 4
+  %9 = load i8*, i8** %5, align 4
+  %10 = call i32 (i8*, i8*, ...) @sprintf(i8* %6, i8* getelementptr inbounds ([53 x i8], [53 x i8]* @.str, i32 0, i32 0), i8* %7, i8* %8, i8* %9) #5
+  %11 = call i32 @curl_global_init(i32 3)
+  %12 = call i8* @curl_easy_init()
+  store i8* %12, i8** %curl, align 4
+  %13 = load i8*, i8** %curl, align 4
+  %14 = icmp ne i8* %13, null
+  br i1 %14, label %15, label %44
+
+; <label>:15                                      ; preds = %0
+  %16 = load i8*, i8** %curl, align 4
+  %17 = load i8*, i8** %2, align 4
+  %18 = call i32 (i8*, i32, ...) @curl_easy_setopt(i8* %16, i32 10002, i8* %17)
+  %19 = load i8*, i8** %curl, align 4
+  %20 = getelementptr inbounds [4096 x i8], [4096 x i8]* %sbuf, i32 0, i32 0
+  %21 = call i32 (i8*, i32, ...) @curl_easy_setopt(i8* %19, i32 10015, i8* %20)
+  %22 = load %struct.curl_slist*, %struct.curl_slist** %headers, align 4
+  %23 = call %struct.curl_slist* @curl_slist_append(%struct.curl_slist* %22, i8* getelementptr inbounds ([31 x i8], [31 x i8]* @.str.1, i32 0, i32 0))
+  store %struct.curl_slist* %23, %struct.curl_slist** %headers, align 4
+  %24 = load i8*, i8** %curl, align 4
+  %25 = load %struct.curl_slist*, %struct.curl_slist** %headers, align 4
+  %26 = call i32 (i8*, i32, ...) @curl_easy_setopt(i8* %24, i32 10023, %struct.curl_slist* %25)
+  %27 = load i8*, i8** %curl, align 4
+  %28 = call %struct._IO_FILE* @fopen(i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.2, i32 0, i32 0), i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.3, i32 0, i32 0))
+  %29 = call i32 (i8*, i32, ...) @curl_easy_setopt(i8* %27, i32 10001, %struct._IO_FILE* %28)
+  %30 = load i8*, i8** %curl, align 4
+  %31 = call i32 @curl_easy_perform(i8* %30)
+  store i32 %31, i32* %res, align 4
+  %32 = load i32, i32* %res, align 4
+  %33 = icmp ne i32 %32, 0
+  br i1 %33, label %34, label %39
+
+; <label>:34                                      ; preds = %15
+  %35 = load %struct._IO_FILE*, %struct._IO_FILE** @stderr, align 4
+  %36 = load i32, i32* %res, align 4
+  %37 = call i8* @curl_easy_strerror(i32 %36)
+  %38 = call i32 (%struct._IO_FILE*, i8*, ...) @fprintf(%struct._IO_FILE* %35, i8* getelementptr inbounds ([32 x i8], [32 x i8]* @.str.4, i32 0, i32 0), i8* %37)
+  br label %39
+
+; <label>:39                                      ; preds = %34, %15
+  %40 = load i8*, i8** %curl, align 4
+  call void @curl_easy_cleanup(i8* %40)
+  call void @curl_global_cleanup()
+  %41 = load i32, i32* %res, align 4
+  %42 = icmp eq i32 %41, 0
+  %43 = zext i1 %42 to i32
+  store i32 %43, i32* %1
+  br label %45
+
+; <label>:44                                      ; preds = %0
+  call void @curl_global_cleanup()
+  store i32 0, i32* %1
+  br label %45
+
+; <label>:45                                      ; preds = %44, %39
+  %46 = load i32, i32* %1
+  %saved_retaddr_epilog = call i8* @llvm.returnaddress(i32 0)
+  call void @__CFI_INTERNAL_EXIT(i32 0, i8* %saved_retaddr_epilog)
+  ret i32 %46
+}
+
+; Function Attrs: nounwind
+declare i32 @sprintf(i8*, i8*, ...) #0
+
+declare i32 @curl_global_init(i32) #1
+
+declare i8* @curl_easy_init() #1
+
+declare i32 @curl_easy_setopt(i8*, i32, ...) #1
+
+declare %struct.curl_slist* @curl_slist_append(%struct.curl_slist*, i8*) #1
+
+declare %struct._IO_FILE* @fopen(i8*, i8*) #1
+
+declare i32 @curl_easy_perform(i8*) #1
+
+declare i32 @fprintf(%struct._IO_FILE*, i8*, ...) #1
+
+declare i8* @curl_easy_strerror(i32) #1
+
+declare void @curl_easy_cleanup(i8*) #1
+
+declare void @curl_global_cleanup() #1
+
+; Function Attrs: nounwind
+define i32 @main(i32 %argc, i8** %argv) #0 {
+  %saved_retaddr_prolog = call i8* @llvm.returnaddress(i32 0)
+  call void @__CFI_INTERNAL_ENTER(i32 1, i8* %saved_retaddr_prolog)
+  %1 = alloca i32, align 4
+  %2 = alloca i32, align 4
+  %3 = alloca i8**, align 4
+  %ret = alloca i8*, align 4
+  %s1 = alloca i8*, align 4
+  %holdval = alloca [10 x i8], align 1
+  %serialDir = alloca [50 x i8], align 1
+  %serialNum = alloca [50 x i8], align 1
+  %lowestStr = alloca [50 x i8], align 1
+  %highestStr = alloca [50 x i8], align 1
+  %currentStr = alloca [50 x i8], align 1
+  %len = alloca i32, align 4
+  %newTemp = alloca i32, align 4
+  %oldTemp = alloca i32, align 4
+  %absTemp = alloca i32, align 4
+  %highestTemp = alloca i32, align 4
+  %lowestTemp = alloca i32, align 4
+  %fp = alloca %struct._IO_FILE*, align 4
+  %path = alloca [50 x i8], align 1
+  store i32 0, i32* %1
+  store i32 %argc, i32* %2, align 4
+  store i8** %argv, i8*** %3, align 4
+  %4 = load i32, i32* %2, align 4
+  %5 = icmp sgt i32 %4, 3
+  br i1 %5, label %6, label %8
+
+; <label>:6                                       ; preds = %0
+  %7 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([31 x i8], [31 x i8]* @.str.5, i32 0, i32 0))
+  store i32 1, i32* %1
+  br label %217
+
+; <label>:8                                       ; preds = %0
+  %9 = load i32, i32* %2, align 4
+  %10 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.1.6, i32 0, i32 0), i32 %9)
+  %11 = load i8**, i8*** %3, align 4
+  %12 = getelementptr inbounds i8*, i8** %11, i32 1
+  %13 = load i8*, i8** %12, align 4
+  %14 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([27 x i8], [27 x i8]* @.str.2.7, i32 0, i32 0), i8* %13)
+  %15 = getelementptr inbounds [50 x i8], [50 x i8]* %serialDir, i32 0, i32 0
+  %16 = call i8* @strcpy(i8* %15, i8* getelementptr inbounds ([24 x i8], [24 x i8]* @.str.3.8, i32 0, i32 0)) #5
+  %17 = getelementptr inbounds [50 x i8], [50 x i8]* %serialDir, i32 0, i32 0
+  %18 = load i8**, i8*** %3, align 4
+  %19 = getelementptr inbounds i8*, i8** %18, i32 1
+  %20 = load i8*, i8** %19, align 4
+  %21 = call i8* @strcat(i8* %17, i8* %20) #5
+  %22 = getelementptr inbounds [50 x i8], [50 x i8]* %serialDir, i32 0, i32 0
+  %23 = call i8* @strcat(i8* %22, i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.4.9, i32 0, i32 0)) #5
+  %24 = getelementptr inbounds [50 x i8], [50 x i8]* %serialDir, i32 0, i32 0
+  %25 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5.10, i32 0, i32 0), i8* %24)
+  %26 = getelementptr inbounds [50 x i8], [50 x i8]* %serialNum, i32 0, i32 0
+  %27 = call i8* @strcpy(i8* %26, i8* getelementptr inbounds ([45 x i8], [45 x i8]* @.str.6, i32 0, i32 0)) #5
+  store i32 -10, i32* %oldTemp, align 4
+  br label %28
+
+; <label>:28                                      ; preds = %8, %216
+  %29 = getelementptr inbounds [50 x i8], [50 x i8]* %serialDir, i32 0, i32 0
+  %30 = call %struct._IO_FILE* @fopen(i8* %29, i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.7, i32 0, i32 0))
+  store %struct._IO_FILE* %30, %struct._IO_FILE** %fp, align 4
+  %31 = load %struct._IO_FILE*, %struct._IO_FILE** %fp, align 4
+  %32 = icmp eq %struct._IO_FILE* %31, null
+  br i1 %32, label %33, label %35
+
+; <label>:33                                      ; preds = %28
+  %34 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([36 x i8], [36 x i8]* @.str.8, i32 0, i32 0))
+  store i32 2, i32* %1
+  br label %217
+
+; <label>:35                                      ; preds = %28
+  br label %36
+
+; <label>:36                                      ; preds = %50, %35
+  %37 = getelementptr inbounds [50 x i8], [50 x i8]* %path, i32 0, i32 0
+  %38 = load %struct._IO_FILE*, %struct._IO_FILE** %fp, align 4
+  %39 = call i8* @fgets(i8* %37, i32 50, %struct._IO_FILE* %38)
+  %40 = icmp ne i8* %39, null
+  br i1 %40, label %41, label %51
+
+; <label>:41                                      ; preds = %36
+  %42 = getelementptr inbounds [50 x i8], [50 x i8]* %path, i32 0, i32 0
+  %43 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.9, i32 0, i32 0), i8* %42)
+  %44 = getelementptr inbounds [50 x i8], [50 x i8]* %path, i32 0, i32 0
+  %45 = call i8* @strpbrk(i8* %44, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.10, i32 0, i32 0)) #6
+  store i8* %45, i8** %ret, align 4
+  %46 = load i8*, i8** %ret, align 4
+  %47 = icmp ne i8* %46, null
+  br i1 %47, label %48, label %50
+
+; <label>:48                                      ; preds = %41
+  %49 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([37 x i8], [37 x i8]* @.str.11, i32 0, i32 0))
+  br label %50
+
+; <label>:50                                      ; preds = %48, %41
+  br label %36
+
+; <label>:51                                      ; preds = %36
+  %52 = getelementptr inbounds [50 x i8], [50 x i8]* %path, i32 0, i32 0
+  %53 = call i32 @strlen(i8* %52) #6
+  %54 = sub i32 %53, 6
+  store i32 %54, i32* %len, align 4
+  %55 = getelementptr inbounds [50 x i8], [50 x i8]* %path, i32 0, i32 0
+  %56 = load i32, i32* %len, align 4
+  %57 = getelementptr inbounds i8, i8* %55, i32 %56
+  store i8* %57, i8** %s1, align 4
+  %58 = getelementptr inbounds [10 x i8], [10 x i8]* %holdval, i32 0, i32 0
+  %59 = load i8*, i8** %s1, align 4
+  %60 = call i8* @strcpy(i8* %58, i8* %59) #5
+  %61 = getelementptr inbounds [10 x i8], [10 x i8]* %holdval, i32 0, i32 0
+  %62 = call i32 @atoi(i8* %61) #6
+  store i32 %62, i32* %newTemp, align 4
+  %63 = load i32, i32* %oldTemp, align 4
+  %64 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([26 x i8], [26 x i8]* @.str.12, i32 0, i32 0), i32 %63)
+  %65 = load i32, i32* %newTemp, align 4
+  %66 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([27 x i8], [27 x i8]* @.str.13, i32 0, i32 0), i32 %65)
+  %67 = load %struct._IO_FILE*, %struct._IO_FILE** %fp, align 4
+  %68 = call i32 @fclose(%struct._IO_FILE* %67)
+  %69 = load i32, i32* %newTemp, align 4
+  %70 = icmp slt i32 %69, 0
+  br i1 %70, label %71, label %102
+
+; <label>:71                                      ; preds = %51
+  %72 = load i32, i32* %oldTemp, align 4
+  %73 = icmp sgt i32 %72, 0
+  br i1 %73, label %74, label %102
+
+; <label>:74                                      ; preds = %71
+  %75 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([21 x i8], [21 x i8]* @.str.14, i32 0, i32 0))
+  %76 = load i32, i32* %newTemp, align 4
+  store i32 %76, i32* %oldTemp, align 4
+  %77 = load i32, i32* %newTemp, align 4
+  %78 = load i32, i32* %highestTemp, align 4
+  %79 = icmp sgt i32 %77, %78
+  br i1 %79, label %80, label %82
+
+; <label>:80                                      ; preds = %74
+  %81 = load i32, i32* %newTemp, align 4
+  store i32 %81, i32* %highestTemp, align 4
+  br label %82
+
+; <label>:82                                      ; preds = %80, %74
+  %83 = load i32, i32* %newTemp, align 4
+  %84 = load i32, i32* %lowestTemp, align 4
+  %85 = icmp slt i32 %83, %84
+  br i1 %85, label %86, label %88
+
+; <label>:86                                      ; preds = %82
+  %87 = load i32, i32* %newTemp, align 4
+  store i32 %87, i32* %lowestTemp, align 4
+  br label %88
+
+; <label>:88                                      ; preds = %86, %82
+  %89 = getelementptr inbounds [50 x i8], [50 x i8]* %lowestStr, i32 0, i32 0
+  %90 = load i32, i32* %lowestTemp, align 4
+  %91 = call i32 (i8*, i8*, ...) @sprintf(i8* %89, i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.15, i32 0, i32 0), i32 %90) #5
+  %92 = getelementptr inbounds [50 x i8], [50 x i8]* %currentStr, i32 0, i32 0
+  %93 = load i32, i32* %newTemp, align 4
+  %94 = call i32 (i8*, i8*, ...) @sprintf(i8* %92, i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.15, i32 0, i32 0), i32 %93) #5
+  %95 = getelementptr inbounds [50 x i8], [50 x i8]* %highestStr, i32 0, i32 0
+  %96 = load i32, i32* %highestTemp, align 4
+  %97 = call i32 (i8*, i8*, ...) @sprintf(i8* %95, i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.15, i32 0, i32 0), i32 %96) #5
+  %98 = getelementptr inbounds [50 x i8], [50 x i8]* %highestStr, i32 0, i32 0
+  %99 = getelementptr inbounds [50 x i8], [50 x i8]* %currentStr, i32 0, i32 0
+  %100 = getelementptr inbounds [50 x i8], [50 x i8]* %lowestStr, i32 0, i32 0
+  call void @__CFI_INTERNAL_CALL(i32 0)
+  %101 = call i32 @ifttt(i8* getelementptr inbounds ([74 x i8], [74 x i8]* @.str.16, i32 0, i32 0), i8* %98, i8* %99, i8* %100)
+  call void @__CFI_INTERNAL_RETURNED(i32 0)
+  br label %102
+
+; <label>:102                                     ; preds = %88, %71, %51
+  %103 = load i32, i32* %newTemp, align 4
+  %104 = icmp sgt i32 %103, 0
+  br i1 %104, label %105, label %136
+
+; <label>:105                                     ; preds = %102
+  %106 = load i32, i32* %oldTemp, align 4
+  %107 = icmp slt i32 %106, 0
+  br i1 %107, label %108, label %136
+
+; <label>:108                                     ; preds = %105
+  %109 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([20 x i8], [20 x i8]* @.str.17, i32 0, i32 0))
+  %110 = load i32, i32* %newTemp, align 4
+  store i32 %110, i32* %oldTemp, align 4
+  %111 = load i32, i32* %newTemp, align 4
+  %112 = load i32, i32* %highestTemp, align 4
+  %113 = icmp sgt i32 %111, %112
+  br i1 %113, label %114, label %116
+
+; <label>:114                                     ; preds = %108
+  %115 = load i32, i32* %newTemp, align 4
+  store i32 %115, i32* %highestTemp, align 4
+  br label %116
+
+; <label>:116                                     ; preds = %114, %108
+  %117 = load i32, i32* %newTemp, align 4
+  %118 = load i32, i32* %lowestTemp, align 4
+  %119 = icmp slt i32 %117, %118
+  br i1 %119, label %120, label %122
+
+; <label>:120                                     ; preds = %116
+  %121 = load i32, i32* %newTemp, align 4
+  store i32 %121, i32* %lowestTemp, align 4
+  br label %122
+
+; <label>:122                                     ; preds = %120, %116
+  %123 = getelementptr inbounds [50 x i8], [50 x i8]* %lowestStr, i32 0, i32 0
+  %124 = load i32, i32* %lowestTemp, align 4
+  %125 = call i32 (i8*, i8*, ...) @sprintf(i8* %123, i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.15, i32 0, i32 0), i32 %124) #5
+  %126 = getelementptr inbounds [50 x i8], [50 x i8]* %currentStr, i32 0, i32 0
+  %127 = load i32, i32* %newTemp, align 4
+  %128 = call i32 (i8*, i8*, ...) @sprintf(i8* %126, i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.15, i32 0, i32 0), i32 %127) #5
+  %129 = getelementptr inbounds [50 x i8], [50 x i8]* %highestStr, i32 0, i32 0
+  %130 = load i32, i32* %highestTemp, align 4
+  %131 = call i32 (i8*, i8*, ...) @sprintf(i8* %129, i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.15, i32 0, i32 0), i32 %130) #5
+  %132 = getelementptr inbounds [50 x i8], [50 x i8]* %highestStr, i32 0, i32 0
+  %133 = getelementptr inbounds [50 x i8], [50 x i8]* %currentStr, i32 0, i32 0
+  %134 = getelementptr inbounds [50 x i8], [50 x i8]* %lowestStr, i32 0, i32 0
+  call void @__CFI_INTERNAL_CALL(i32 0)
+  %135 = call i32 @ifttt(i8* getelementptr inbounds ([74 x i8], [74 x i8]* @.str.16, i32 0, i32 0), i8* %132, i8* %133, i8* %134)
+  call void @__CFI_INTERNAL_RETURNED(i32 0)
+  br label %136
+
+; <label>:136                                     ; preds = %122, %105, %102
+  %137 = load i32, i32* %oldTemp, align 4
+  %138 = icmp sgt i32 %137, 0
+  br i1 %138, label %139, label %178
+
+; <label>:139                                     ; preds = %136
+  %140 = load i32, i32* %newTemp, align 4
+  %141 = icmp sgt i32 %140, 0
+  br i1 %141, label %142, label %178
+
+; <label>:142                                     ; preds = %139
+  %143 = load i32, i32* %oldTemp, align 4
+  %144 = load i32, i32* %newTemp, align 4
+  %145 = sub nsw i32 %143, %144
+  %146 = call i32 @abs(i32 %145) #4
+  store i32 %146, i32* %absTemp, align 4
+  %147 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([27 x i8], [27 x i8]* @.str.18, i32 0, i32 0))
+  %148 = load i32, i32* %absTemp, align 4
+  %149 = icmp sge i32 %148, 1000
+  br i1 %149, label %150, label %177
+
+; <label>:150                                     ; preds = %142
+  %151 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([36 x i8], [36 x i8]* @.str.19, i32 0, i32 0))
+  %152 = load i32, i32* %newTemp, align 4
+  %153 = load i32, i32* %highestTemp, align 4
+  %154 = icmp sgt i32 %152, %153
+  br i1 %154, label %155, label %157
+
+; <label>:155                                     ; preds = %150
+  %156 = load i32, i32* %newTemp, align 4
+  store i32 %156, i32* %highestTemp, align 4
+  br label %157
+
+; <label>:157                                     ; preds = %155, %150
+  %158 = load i32, i32* %newTemp, align 4
+  %159 = load i32, i32* %lowestTemp, align 4
+  %160 = icmp slt i32 %158, %159
+  br i1 %160, label %161, label %163
+
+; <label>:161                                     ; preds = %157
+  %162 = load i32, i32* %newTemp, align 4
+  store i32 %162, i32* %lowestTemp, align 4
+  br label %163
+
+; <label>:163                                     ; preds = %161, %157
+  %164 = getelementptr inbounds [50 x i8], [50 x i8]* %lowestStr, i32 0, i32 0
+  %165 = load i32, i32* %lowestTemp, align 4
+  %166 = call i32 (i8*, i8*, ...) @sprintf(i8* %164, i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.15, i32 0, i32 0), i32 %165) #5
+  %167 = getelementptr inbounds [50 x i8], [50 x i8]* %currentStr, i32 0, i32 0
+  %168 = load i32, i32* %newTemp, align 4
+  %169 = call i32 (i8*, i8*, ...) @sprintf(i8* %167, i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.15, i32 0, i32 0), i32 %168) #5
+  %170 = getelementptr inbounds [50 x i8], [50 x i8]* %highestStr, i32 0, i32 0
+  %171 = load i32, i32* %highestTemp, align 4
+  %172 = call i32 (i8*, i8*, ...) @sprintf(i8* %170, i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.15, i32 0, i32 0), i32 %171) #5
+  %173 = getelementptr inbounds [50 x i8], [50 x i8]* %highestStr, i32 0, i32 0
+  %174 = getelementptr inbounds [50 x i8], [50 x i8]* %currentStr, i32 0, i32 0
+  %175 = getelementptr inbounds [50 x i8], [50 x i8]* %lowestStr, i32 0, i32 0
+  call void @__CFI_INTERNAL_CALL(i32 0)
+  %176 = call i32 @ifttt(i8* getelementptr inbounds ([74 x i8], [74 x i8]* @.str.16, i32 0, i32 0), i8* %173, i8* %174, i8* %175)
+  call void @__CFI_INTERNAL_RETURNED(i32 0)
+  br label %177
+
+; <label>:177                                     ; preds = %163, %142
+  br label %216
+
+; <label>:178                                     ; preds = %139, %136
+  %179 = load i32, i32* %oldTemp, align 4
+  %180 = call i32 @abs(i32 %179) #4
+  %181 = load i32, i32* %newTemp, align 4
+  %182 = call i32 @abs(i32 %181) #4
+  %183 = sub nsw i32 %180, %182
+  %184 = call i32 @abs(i32 %183) #4
+  store i32 %184, i32* %absTemp, align 4
+  %185 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([19 x i8], [19 x i8]* @.str.20, i32 0, i32 0))
+  %186 = load i32, i32* %absTemp, align 4
+  %187 = icmp sge i32 %186, 1000
+  br i1 %187, label %188, label %215
+
+; <label>:188                                     ; preds = %178
+  %189 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([36 x i8], [36 x i8]* @.str.21, i32 0, i32 0))
+  %190 = load i32, i32* %newTemp, align 4
+  %191 = load i32, i32* %highestTemp, align 4
+  %192 = icmp sgt i32 %190, %191
+  br i1 %192, label %193, label %195
+
+; <label>:193                                     ; preds = %188
+  %194 = load i32, i32* %newTemp, align 4
+  store i32 %194, i32* %highestTemp, align 4
+  br label %195
+
+; <label>:195                                     ; preds = %193, %188
+  %196 = load i32, i32* %newTemp, align 4
+  %197 = load i32, i32* %lowestTemp, align 4
+  %198 = icmp slt i32 %196, %197
+  br i1 %198, label %199, label %201
+
+; <label>:199                                     ; preds = %195
+  %200 = load i32, i32* %newTemp, align 4
+  store i32 %200, i32* %lowestTemp, align 4
+  br label %201
+
+; <label>:201                                     ; preds = %199, %195
+  %202 = getelementptr inbounds [50 x i8], [50 x i8]* %lowestStr, i32 0, i32 0
+  %203 = load i32, i32* %lowestTemp, align 4
+  %204 = call i32 (i8*, i8*, ...) @sprintf(i8* %202, i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.15, i32 0, i32 0), i32 %203) #5
+  %205 = getelementptr inbounds [50 x i8], [50 x i8]* %currentStr, i32 0, i32 0
+  %206 = load i32, i32* %newTemp, align 4
+  %207 = call i32 (i8*, i8*, ...) @sprintf(i8* %205, i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.15, i32 0, i32 0), i32 %206) #5
+  %208 = getelementptr inbounds [50 x i8], [50 x i8]* %highestStr, i32 0, i32 0
+  %209 = load i32, i32* %highestTemp, align 4
+  %210 = call i32 (i8*, i8*, ...) @sprintf(i8* %208, i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.15, i32 0, i32 0), i32 %209) #5
+  %211 = getelementptr inbounds [50 x i8], [50 x i8]* %highestStr, i32 0, i32 0
+  %212 = getelementptr inbounds [50 x i8], [50 x i8]* %currentStr, i32 0, i32 0
+  %213 = getelementptr inbounds [50 x i8], [50 x i8]* %lowestStr, i32 0, i32 0
+  call void @__CFI_INTERNAL_CALL(i32 0)
+  %214 = call i32 @ifttt(i8* getelementptr inbounds ([74 x i8], [74 x i8]* @.str.16, i32 0, i32 0), i8* %211, i8* %212, i8* %213)
+  call void @__CFI_INTERNAL_RETURNED(i32 0)
+  br label %215
+
+; <label>:215                                     ; preds = %201, %178
+  br label %216
+
+; <label>:216                                     ; preds = %215, %177
+  br label %28
+
+; <label>:217                                     ; preds = %33, %6
+  %218 = load i32, i32* %1
+  %saved_retaddr_epilog = call i8* @llvm.returnaddress(i32 0)
+  call void @__CFI_INTERNAL_EXIT(i32 1, i8* %saved_retaddr_epilog)
+  ret i32 %218
+}
+
+declare i32 @printf(i8*, ...) #1
+
+; Function Attrs: nounwind
+declare i8* @strcpy(i8*, i8*) #0
+
+; Function Attrs: nounwind
+declare i8* @strcat(i8*, i8*) #0
+
+declare i8* @fgets(i8*, i32, %struct._IO_FILE*) #1
+
+; Function Attrs: nounwind readonly
+declare i8* @strpbrk(i8*, i8*) #2
+
+; Function Attrs: nounwind readonly
+declare i32 @strlen(i8*) #2
+
+; Function Attrs: nounwind readonly
+declare i32 @atoi(i8*) #2
+
+declare i32 @fclose(%struct._IO_FILE*) #1
+
+; Function Attrs: nounwind readnone
+declare i32 @abs(i32) #3
+
+declare i32 @__FORK_WRAPPER(i32)
+
+declare void @__CFI_INTERNAL_BB_AFTER_BR(i32, i32)
+
+declare void @__CFI_INTERNAL_BB_BEFORE_BR(i32, i32)
+
+declare void @__CFI_INTERNAL_ENTER(i32, i8*)
+
+declare void @__CFI_INTERNAL_EXIT(i32, i8*)
+
+declare void @__CFI_INTERNAL_CALL(i32)
+
+declare void @__CFI_INTERNAL_RETURNED(i32)
+
+declare void @__CFI_INTERNAL_FORK_SON(i32)
+
+; Function Attrs: nounwind readnone
+declare i8* @llvm.returnaddress(i32) #4
+
+attributes #0 = { nounwind "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="cortex-a8" "target-features"="+neon,+vfp3" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #1 = { "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="cortex-a8" "target-features"="+neon,+vfp3" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #2 = { nounwind readonly "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="cortex-a8" "target-features"="+neon,+vfp3" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #3 = { nounwind readnone "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="true" "no-frame-pointer-elim-non-leaf" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="cortex-a8" "target-features"="+neon,+vfp3" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #4 = { nounwind readnone }
+attributes #5 = { nounwind }
+attributes #6 = { nounwind readonly }
+
+!llvm.ident = !{!0, !0}
+!llvm.module.flags = !{!1, !2}
+
+!0 = !{!"clang version 3.7.0 (tags/RELEASE_370/final)"}
+!1 = !{i32 1, !"wchar_size", i32 4}
+!2 = !{i32 1, !"min_enum_size", i32 4}

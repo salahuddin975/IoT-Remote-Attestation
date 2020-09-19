@@ -26,7 +26,7 @@ IGNORED_FUNCTIONS:=ignored_functions.txt
 CFI_PASS?=/usr/lib/picon/libCFI.so
 CFI_PRELINK?=/usr/bin/picon-prelink
 OPT?=opt-3.7
-OPTFLAGS:=-load $(CFI_PASS) -cfi -cfi-level=1 -cfi-ignore=$(IGNORED_FUNCTIONS)
+OPTFLAGS:=-load $(CFI_PASS) -cfi -cfi-level=0 -cfi-ignore=$(IGNORED_FUNCTIONS)
 
 
 ######################
@@ -50,8 +50,6 @@ $(BUILDDIR)/%_cfi.bc: $(BUILDDIR)/%.bc $(IGNORED_FUNCTIONS)
 $(BUILDDIR)/%.o: $(BUILDDIR)/%_cfi.bc
 	$(CC) $(CFLAGS) -c -o $@ $<
 
-# 第一种尝试是每一个.bc文件均生成一个cfi.bc文件，然后统一链接
-# 第二种是先生成链接好的.o文件，然后重新反汇编为统一的.bc文件，再生成cfi.bc文件，然后统一链接
 $(_INJECTED)_%.c: $(BUILDDIR)/%_cfi.bc
 	$(CFI_PRELINK) $(basename $<) > $@
 
