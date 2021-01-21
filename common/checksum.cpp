@@ -7,6 +7,16 @@
 #include <openssl/sha.h>
 #include <vector>
 
+#include <iostream>
+#include <sstream>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <netinet/in.h>
+
+#define CHECKSUM_PORT 8080
+#define MAXLINE 1024
+
 #define MAX_PATH_LEN 4096          // lINUX: 4096, windows: 260
 #define MAX_NUM_OF_LIBS 200
 
@@ -173,6 +183,52 @@ void calculate_checksum(char *hash_value, int type, unsigned int seed, int num_o
     }
     putchar('\n');
 }
+
+
+void *checksum(void *vargp)
+{
+    int sockfd;
+    char hash_value[SHA256_DIGEST_LENGTH];
+    char buffer[MAXLINE];
+    struct sockaddr_in servaddr, cliaddr;
+
+    memset(&servaddr, 0, sizeof(servaddr));
+    memset(&cliaddr, 0, sizeof(cliaddr));
+
+    servaddr.sin_family    = AF_INET;
+    servaddr.sin_addr.s_addr = INADDR_ANY;
+    servaddr.sin_port = htons(CHECKSUM_PORT);
+
+    sockfd = socket(AF_INET, SOCK_DGRAM, 0);
+
+    if(bind(sockfd, (const struct sockaddr *)&servaddr, sizeof(servaddr)) < 0 ) {
+        perror("bind failed");
+        exit(EXIT_FAILURE);
+    }
+
+    int addr_len, n;
+    addr_len = sizeof(cliaddr);
+
+    int type;
+    int seed;
+    int num_of_blocks;
+    int block_size;
+
+    while(recvfrom(sockfd, (char *)buffer, MAXLINE, MSG_WAITALL, ( struct sockaddr *) &cliaddr, &addr_len)){
+        std::stringstream ss(buffer);
+        ss >> type;
+	ss >> seed;
+	ss >> num_of_blocks;
+	ss >> block_size;
+        printf("buffer: %s; type: %d; seed: %d; num_of_blocks: %d, block_size: %d\n", buffer, type, seed,num_of_blocks, block_size);
+        calculate_checksum(hash_value, type, seed, num_of_blocks, block_size);
+
+        sendto(sockfd, (const char *)hash_value, SHA256_DIGEST_LENGTH, MSG_CONFIRM, (const struct sockaddr *) &cliaddr, addr_len); 
+    }
+}
+
+
+
 
 
 /*

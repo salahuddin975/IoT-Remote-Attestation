@@ -24,17 +24,19 @@
 
 
 
-#define CHECKSUM_PORT     8080 
-#define MAXLINE 1024 
+//#define CHECKSUM_PORT     8080 
+//#define MAXLINE 1024 
 
 
 Server s;
 extern int attack_type = 0;
 
 
-void calculate_checksum(char *hash_value, int type, unsigned int seed, int num_of_blocks, int block_size);
+//void calculate_checksum(char *hash_value, int type, unsigned int seed, int num_of_blocks, int block_size);
 
+void *checksum(void *vargp);
 
+/*
 void *checksum(void *vargp)
 {
     int sockfd; 
@@ -76,7 +78,7 @@ void *checksum(void *vargp)
         sendto(sockfd, (const char *)hash_value, SHA256_DIGEST_LENGTH, MSG_CONFIRM, (const struct sockaddr *) &cliaddr, addr_len); 
     }
 }
-
+*/
 
 void TerminationHandler(void)
 {
