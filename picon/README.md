@@ -51,6 +51,34 @@ The following files can be edited to change or set options:
       of the monitored program
     * `CFI_DEBUG` : if set, the monitor will display (a lot of) debug
       output
+### Picon Installation
+
+```
+sudo apt install cmake gcc-arm-none-eabi
+wget "https://releases.llvm.org/3.7.0/clang+llvm-3.7.0-armv7a-linux-gnueabihf.tar.xz"
+tar xf clang+llvm-3.7.0-armv7a-linux-gnueabihf.tar.xz
+cd clang+llvm-3.7.0-armv7a-linux-gnueabihf/
+sudo cp -r bin/* /usr/bin/
+sudo cp -r include/* /usr/include/
+sudo cp -r lib/* /usr/lib/
+sudo cp -r share/* /usr/share/
+sudo apt install llvm-3.7
+cd ..
+git clone https://github.com/salahuddin975/IoT-Remote-Attestation.git
+cd IoT-Remote-Attestation/picon/
+make & sudo make install
+```
+
+### Compile the Example
+
+```
+cd IoT-Remote-Attestation/picon/examples/
+sudo ln -s /usr/lib/gcc/arm-linux-gnueabihf/8/libgcc.a /usr/lib/arm-linux-gnueabihf/libgcc.a
+sudo ln -s /usr/lib/gcc/arm-linux-gnueabihf/8/crtbegin.o /usr/lib/arm-linux-gnueabihf/crtbegin.o
+sudo ln -s /usr/lib/gcc/arm-linux-gnueabihf/8/libgcc_s.so /usr/lib/arm-linux-gnueabihf/libgcc_s.so
+sudo ln -s /usr/lib/gcc/arm-linux-gnueabihf/8/crtend.o /usr/lib/arm-linux-gnueabihf/crtend.o
+make
+```
 
 ## Usage
 

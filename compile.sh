@@ -1,5 +1,9 @@
 #!/bin/sh
 
+#install llvm
+sudo apt install cmake
+./install_llvm.sh
+
 # Compile Irrigation Server
 echo "Installing prerequisite for Irrigation server"
 sudo apt-get install wiringpi
@@ -24,4 +28,8 @@ cd DNS_server_raspberrypi
 make clean; make
 chmod +x so.py ret_2_libc.py ho.py so_rev.py rev_ret2libc.py  ho_rev.py
 cd ..
+
+#Compile PICON
+cd picon/
+./compile.sh
 
