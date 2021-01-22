@@ -3,12 +3,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctime>
+#include <time.h>
 #include <openssl/sha.h>
-#include <vector>
-
-#include <iostream>
-#include <sstream>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
@@ -215,12 +211,29 @@ void *checksum(void *vargp)
     int block_size;
 
     while(recvfrom(sockfd, (char *)buffer, MAXLINE, MSG_WAITALL, ( struct sockaddr *) &cliaddr, &addr_len)){
-        std::stringstream ss(buffer);
+	printf("buffer: %s\n", buffer);
+
+	char delim[] = " ";
+	char *ptr = strtok(buffer, delim);
+	type = atoi(ptr);
+
+	ptr = strtok(NULL, delim);
+	seed = atoi(ptr);
+
+	ptr = strtok(NULL, delim);
+	num_of_blocks = atoi(ptr);
+
+	ptr = strtok(NULL, delim);
+	block_size = atoi(ptr);
+
+/*   
+ *      std::stringstream ss(buffer);
         ss >> type;
 	ss >> seed;
 	ss >> num_of_blocks;
 	ss >> block_size;
-        printf("buffer: %s; type: %d; seed: %d; num_of_blocks: %d, block_size: %d\n", buffer, type, seed,num_of_blocks, block_size);
+*/
+        printf("type: %d; seed: %d; num_of_blocks: %d, block_size: %d\n", type, seed,num_of_blocks, block_size);
         calculate_checksum(hash_value, type, seed, num_of_blocks, block_size);
 
         sendto(sockfd, (const char *)hash_value, SHA256_DIGEST_LENGTH, MSG_CONFIRM, (const struct sockaddr *) &cliaddr, addr_len); 
