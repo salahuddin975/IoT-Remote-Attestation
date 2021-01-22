@@ -79,10 +79,12 @@ void calculate_checksum(char* hash_value)
 }
 */
 
-void calculate_checksum(char *hash_value, unsigned int seed);
+//void calculate_checksum(char *hash_value, unsigned int seed);
 
 
-void *checksum(void *vargp)
+void *checksum(void *vargp);
+
+/*
 {
     int sockfd;
     char hash_value[SHA256_DIGEST_LENGTH];
@@ -113,7 +115,7 @@ void *checksum(void *vargp)
     }
 
 }
-
+*/
 
 int main(int argc, char** argv)
 {
