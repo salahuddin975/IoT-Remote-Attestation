@@ -22,10 +22,9 @@
 #include <opencv2/highgui/highgui_c.h>
 #include <opencv/cxcore.h>
 #include <opencv/cv.h>
-
+#include "opencv2/videoio/videoio_c.h"
 #include "jpegutil.h"
 
-typedef enum {false=0,true=1} bool ;
 typedef unsigned char		byte;
 
 const int	PORT		= 5555;
