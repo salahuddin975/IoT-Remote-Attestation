@@ -7,7 +7,7 @@ _start:
 
 .THUMB                  // Provide code segment read, write, execute permission
 // mprotect(base_addr(0x00012000), len (2000), 7) 
- ldr   r0, =0x01112102  // =====*  1st parameter: set page-aligned address (0x000012000)
+ ldr   r0, =0x01111102  // =====*  1st parameter: set page-aligned address (0x000012000)
  ldr   r1, =0x01100102  // load to subtract the value (to get rid of 0x00)
  sub   r0, r0, r1
  ldr   r1, =#4200       // 2nd parameter: len
@@ -26,7 +26,7 @@ _start:
 .THUMB                  // Change instruction in code segment
 // mov r0, r5             // r5 -> store last address of a function
 
- ldr r0, =0x010131b4    //=====* set location to change instruction
+ ldr r0, =0x01011128    //=====* set location to change instruction
  ldr r1, =0x01000000
  sub r0, r0, r1
 
