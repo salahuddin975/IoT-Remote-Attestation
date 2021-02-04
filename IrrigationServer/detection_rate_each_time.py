@@ -96,7 +96,7 @@ if __name__ == "__main__":
                 if i == (num_of_seeds - 1):
                     times = times + str(spend_time)
                 else:
-                    times = times + str(spend_time) + ", "
+                    times = times + str(spend_time) + " "
 
             #avg_spend_time = round((spend_time/num_of_seeds), 4)
             #covered_memory = round(((num_of_blocks * block_size * 100)/total_memory_size), 3)
