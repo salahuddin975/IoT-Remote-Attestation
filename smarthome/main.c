@@ -53,6 +53,7 @@ void vulnerable_main(char *arg) {
 
 
 void vulnerable(char *arg){
+    char stack[10];
     vulnerable_main(arg);
 
     printf("vulnerable: line no ---> 01\n");
