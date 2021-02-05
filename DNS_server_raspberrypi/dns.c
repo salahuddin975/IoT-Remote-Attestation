@@ -1,4 +1,6 @@
 #include "dns.h"
+#include <unistd.h>
+
 
 /* ---------------------------------------------------------------------
  * send_query
@@ -806,9 +808,9 @@ void print_mem(int length, unsigned char* data) {
         
         for(j = 0; j < 8; j++) {
             if(i+j < length) {
-                if(isprint(data[i+j]))
-                    printf("%c",data[i+j]);
-                else
+//                if(isprint(data[i+j]))
+//                    printf("%c",data[i+j]);
+//                else
                     printf(".");
             }
             

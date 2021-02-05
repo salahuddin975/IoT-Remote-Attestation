@@ -112,6 +112,7 @@ void recv_response(int sock_fd, struct sockaddr_in* server_addr);
 void copy_name_dns_format(char* qname,char* host);
 
 int send_query(char* host, char* dns_ip,  struct sockaddr_in* server_addr);
+int recv_query();
 
 void free_response(response* ptr);
 
